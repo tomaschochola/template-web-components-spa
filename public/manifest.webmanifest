@@ -1,6 +1,6 @@
 {
   "background_color": "white",
-  "description": "premierstacks browser webpack typescript react app template",
+  "description": "tomaschochola/template-react-spa",
   "display": "standalone",
   "display_override": ["window-controls-overlay"],
   "icons": [
@@ -69,12 +69,12 @@
   "launch_handler": {
     "client_mode": "focus-existing"
   },
-  "name": "@premierstacks/browser-webpack-typescript-react-app-template",
+  "name": "tomaschochola/template-react-spa",
   "orientation": "any",
   "prefer_related_applications": false,
   "related_applications": [],
   "scope": "/",
-  "short_name": "@premierstacks/browser-webpack-typescript-react-app-template",
+  "short_name": "tomaschochola/template-react-spa",
   "start_url": "/",
   "theme_color": "white"
 }

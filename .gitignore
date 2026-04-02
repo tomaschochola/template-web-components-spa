@@ -7,18 +7,19 @@
 
 # node
 /node_modules
-/package-lock.json
+
+# environment files and secrets
+/.env
+/.secrets
 
 # compiled files
 /dist
-
-# environment files
-.env
 
 # playwright
 /test-results
 
 # icons
-/public/favicon*
-/public/icon*
-/public/apple-touch-icon*
+/public/*icon*
+
+# temporary
+/package-lock.json

@@ -1,11 +1,12 @@
 *
+!/.browserslistrc
 !/assets
-!/docker
+!/babel.config.js
+!/ops
+!/package-lock.json
+!/package.json
+!/postcss.config.js
 !/public
 !/src
-!/.browserslistrc
-!/package.json
-!/babel.config.js
-!/postcss.config.js
 !/tsconfig.json
 !/webpack.config.js

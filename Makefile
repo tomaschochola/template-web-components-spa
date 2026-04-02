@@ -2,161 +2,143 @@
 SHELL := /bin/bash
 
 # Default goal
-.DEFAULT_GOAL := help
+.DEFAULT_GOAL := never
 
-# Variables
-MAKE_NPM_EXE ?= npm
-MAKE_NODE_EXE ?= node
-
-MAKE_NPM ?= ${MAKE_NPM_EXE}
-MAKE_NODE ?= ${MAKE_NODE_EXE}
+# Options
+export DEBIAN_FRONTEND := noninteractive
 
 # Goals
-.PHONY: help
-help:
-	@echo 'Usage:'
-	@echo '  make <target>'
-	@echo ''
-	@echo 'Mission-critical delivery flows:'
-	@echo '  local'
-	@echo '                    Prepare the local developer environment build.'
-	@echo '  ci'
-	@echo '                    Prepare the continuous integration environment build.'
-	@echo '  development'
-	@echo '                    Prepare the shared development-ready environment build.'
-	@echo '  qa'
-	@echo '                    Prepare the QA validation environment build.'
-	@echo '  staging'
-	@echo '                    Prepare the staging certification environment build.'
-	@echo '  production'
-	@echo '                    Prepare the production release environment build.'
-	@echo ''
-	@echo 'Application runtime interface:'
-	@echo '  start | serve | up | server | dev'
-	@echo '                    Boot the development HTTP server.'
-	@echo ''
-	@echo 'Quality gates & assurance:'
-	@echo '  check'
-	@echo '                    Execute the end-to-end quality gate before promotion.'
-	@echo '  test'
-	@echo '                    Run the full automated test campaign.'
-	@echo '  coverage'
-	@echo '                    Host the local web console for the latest coverage run.'
-	@echo '  lint'
-	@echo '                    Execute all linters across source code and assets.'
-	@echo '  fix'
-	@echo '                    Autofix style and formatting deviations across stacks.'
-	@echo '  stan'
-	@echo '                    Run advanced static analysis for the PHP domain.'
-	@echo '  audit'
-	@echo '                    Assess dependency health and supply-chain posture.'
-	@echo ''
-	@echo 'Dependencies & environment:'
-	@echo '  install'
-	@echo '                    Provision all runtime dependencies for the project.'
-	@echo '  update'
-	@echo '                    Refresh dependencies to the latest approved revisions.'
-	@echo ''
-	@echo 'Housekeeping & recovery:'
-	@echo '  clean'
-	@echo '                    Purge build caches and dependency artifacts.'
-	@echo '  distclean'
-	@echo '                    Reset the project to a pristine state.'
-	@echo ''
-	@echo 'Meta:'
-	@echo '  help'
-	@echo '                    Show this operational guide.'
+.PHONY: commit
+commit: distclean update fix check
 
-.PHONY: build
-build: favicons
-	${MAKE_NPM} run build
-
-.PHONY: start serve up server dev
-start serve up server dev: favicons
-	${MAKE_NPM} run start
-
-.PHONY: audit
-audit: audit_npm
-
-.PHONY: audit_npm
-audit_npm: ./node_modules ./package.json ./package-lock.json
-	${MAKE_NPM} run npm:audit
+.PHONY: fix
+fix: eslint_fix prettier_fix stylelint_fix yq_fix
 
 .PHONY: check
 check: lint stan test audit
 
+.PHONY: lint
+lint: eslint_check prettier_check stylelint_check
+
+.PHONY: stan
+stan: typescript_check
+
+.PHONY: test
+test: playwright_test
+
+.PHONY: audit
+audit: npm_audit
+
+.PHONY: install
+install: npm_install
+
+.PHONY: update
+update: npm_update
+
 .PHONY: clean
 clean:
 	rm -rf ./node_modules
-	rm -rf ./package-lock.json
+	rm -rf ./dist
+	rm -rf ./public/*icon*
 
 .PHONY: distclean
 distclean: clean
-	rm -rf ./dist
-	rm -rf ./public/favicon*
-	rm -rf ./public/icon*
-	rm -rf ./public/apple-touch-icon*
+	git clean -Xfd
 
-.PHONY: fix
-fix: fix_eslint fix_prettier fix_stylelint
+.PHONY: eslint_fix
+eslint_fix: ./node_modules ./eslint.config.js
+	npm exec --ignore-scripts -- eslint --concurrency=auto --fix .
 
-.PHONY: fix_eslint
-fix_eslint: ./node_modules ./eslint.config.js
-	${MAKE_NPM} run fix:eslint
+.PHONY: prettier_fix
+prettier_fix: ./node_modules ./prettier.config.js
+	npm exec --ignore-scripts -- prettier -w .
 
-.PHONY: fix_prettier
-fix_prettier: ./node_modules ./prettier.config.js
-	${MAKE_NPM} run fix:prettier
+.PHONY: stylelint_fix
+stylelint_fix: ./node_modules ./stylelint.config.js
+	npm exec --ignore-scripts -- stylelint --fix ./**/*.{sass,scss,css}
 
-.PHONY: fix_stylelint
-fix_stylelint: ./node_modules ./stylelint.config.js
-	${MAKE_NPM} run fix:stylelint
+.PHONY: yq_fix
+yq_fix:
+	find . -type f -name "*.yml" -exec yq -i 'sort_keys(..)' {} \;
 
-.PHONY: lint
-lint: lint_eslint lint_prettier lint_stylelint
+.PHONY: eslint_check
+eslint_check: ./node_modules ./eslint.config.js
+	npm exec --ignore-scripts -- eslint --concurrency=auto .
 
-.PHONY: lint_eslint
-lint_eslint: ./node_modules ./eslint.config.js
-	${MAKE_NPM} run lint:eslint
+.PHONY: prettier_check
+prettier_check: ./node_modules ./prettier.config.js
+	npm exec --ignore-scripts -- prettier -c .
 
-.PHONY: lint_prettier
-lint_prettier: ./node_modules ./prettier.config.js
-	${MAKE_NPM} run lint:prettier
+.PHONY: stylelint_check
+stylelint_check: ./node_modules ./stylelint.config.js
+	npm exec --ignore-scripts -- stylelint ./**/*.{sass,scss,css}
 
-.PHONY: lint_stylelint
-lint_stylelint: ./node_modules ./stylelint.config.js
-	${MAKE_NPM} run lint:stylelint
+.PHONY: typescript_check
+typescript_check: ./node_modules ./tsconfig.json
+	npm exec --ignore-scripts -- tsc --noEmit
 
-.PHONY: stan
-stan: stan_typescript
+.PHONY: playwright_test
+playwright_test: ./node_modules ./playwright.config.js
+	npm exec --ignore-scripts -- playwright test
 
-.PHONY: stan_typescript
-stan_typescript: ./node_modules ./tsconfig.json
-	${MAKE_NPM} run stan:typescript
+.PHONY: playwright_install
+playwright_install: ./node_modules ./playwright.config.js
+	npm exec --ignore-scripts -- playwright install --with-deps
 
-.PHONY: test
-test: test_playwright
+.PHONY: npm_audit
+npm_audit: ./node_modules ./package.json ./package-lock.json
+	npm audit --ignore-scripts --audit-level=critical --install-links --include=prod --include=dev --include=peer --include=optional
 
-.PHONY: test_playwright
-test_playwright: ./node_modules ./playwright.config.js
-	${MAKE_NPM} run playwright:install
-	${MAKE_NPM} run playwright:test
+.PHONY: npm_install
+npm_install: ./package.json ./package-lock.json
+	npm install --ignore-scripts --install-links --include=prod --include=dev --include=peer --include=optional
 
-.PHONY: install
-install: install_npm
-
-.PHONY: install_npm
-install_npm: ./package.json
-	${MAKE_NPM} run npm:install
-
-.PHONY: update
-update: update_npm
-
-.PHONY: update_npm
-update_npm: ./package.json
+.PHONY: npm_update
+npm_update: ./package.json
 	rm -rf ./node_modules
 	rm -rf ./package-lock.json
-	${MAKE_NPM} run npm:update
+	npm update --ignore-scripts --install-links --include=prod --include=dev --include=peer --include=optional
+
+.PHONY: postcreate
+postcreate: install favicons
+
+.PHONY: start serve server dev
+start serve server dev: ./node_modules ./package.json ./package-lock.json favicons
+	npm exec --ignore-scripts -- webpack-cli serve --mode=${NODE_ENV} --config-node-env=${NODE_ENV} --env APP_ENV=${APP_ENV}
+
+.PHONY: image
+image:
+	docker compose -f ./docker-compose.yml -f ./docker-compose-swarm.yml build --pull --push
+
+.PHONY: deploy
+deploy:
+	docker stack deploy -c ./docker-compose.yml -c ./docker-compose-swarm.yml --with-registry-auth --prune --detach=false --resolve-image=always ${CI_PROJECT_PATH_SLUG:-template-express-api}
+
+.PHONY: up
+up:
+	docker compose -f ./docker-compose.yml -f ./docker-compose-swarm.yml up --build --remove-orphans --always-recreate-deps --force-recreate --pull=always --renew-anon-volumes
+
+.PHONY: down
+down:
+	docker compose -f ./docker-compose.yml -f ./docker-compose-swarm.yml down --remove-orphans
+
+.PHONY: password
+password:
+	@tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c 32
+
+.PHONY: secret
+secret:
+	@tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c 64
+
+.PHONY: devcontainer
+devcontainer:
+	devcontainer up
+	devcontainer exec /bin/bash || true
+	docker compose -f ./docker-compose.yml -f ./docker-compose-devcontainer.yml down --remove-orphans
+
+.PHONY: build
+build: favicons
+	npm exec --ignore-scripts -- webpack-cli build --mode=${NODE_ENV} --config-node-env=${NODE_ENV} --env APP_ENV=${APP_ENV}
 
 .PHONY: favicons
 favicons: ./assets/icons/icon.svg
@@ -167,16 +149,25 @@ favicons: ./assets/icons/icon.svg
 	convert ./assets/icons/icon.svg -background none -density 300 -resize 180x180 ./public/apple-touch-icon.png
 	convert ./assets/icons/icon.svg -background none -density 300 -resize 192x192 ./public/icon-192x192.png
 	convert ./assets/icons/icon.svg -background none -density 300 -resize 512x512 ./public/icon-512x512.png
-	convert ./assets/icons/icon.svg -background none -density 300 -resize 154x154 ./node_modules/temp.png
-	convert -size 192x192 canvas:none ./node_modules/temp.png -gravity center -composite ./public/icon-192x192-maskable.png
-	convert ./assets/icons/icon.svg -background none -density 300 -resize 410x410 ./node_modules/temp.png
-	convert -size 512x512 canvas:none ./node_modules/temp.png -gravity center -composite ./public/icon-512x512-maskable.png
+	convert ./assets/icons/icon.svg -background none -density 300 -resize 154x154 ./temp.png
+	convert -size 192x192 canvas:none ./temp.png -gravity center -composite ./public/icon-192x192-maskable.png
+	convert ./assets/icons/icon.svg -background none -density 300 -resize 410x410 ./temp.png
+	convert -size 512x512 canvas:none ./temp.png -gravity center -composite ./public/icon-512x512-maskable.png
 	cp ./assets/icons/icon.svg ./public/favicon.svg
+	rm ./temp.png
 
-.PHONY: postcreate
-postcreate:
-	${MAKE} build
+.PHONY: playwright_failed
+playwright_failed: ./node_modules ./playwright.config.js
+	npm exec --ignore-scripts -- playwright test --last-failed
+
+.PHONY: playwright_headed
+playwright_headed: ./node_modules ./playwright.config.js
+	npm exec --ignore-scripts -- playwright test --headed
+
+.PHONY: playwright_ui
+playwright_ui: ./node_modules ./playwright.config.js
+	npm exec --ignore-scripts -- playwright test --ui
 
 # Dependencies
-./package-lock.json ./node_modules:
-	${MAKE} install
+./package-lock.json ./node_modules: ./package.json
+	${MAKE} npm_update
