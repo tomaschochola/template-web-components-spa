@@ -7,7 +7,7 @@ FROM nginxinc/nginx-unprivileged:1-trixie AS versionednginx
 FROM versionednode AS base
 WORKDIR /workspaces
 ENV APP_ENV=production
-ENV APP_VERSION=latest
+ENV APP_VERSION=dev
 ENV NODE_ENV=production
 RUN <<EOF
   set -euo pipefail
@@ -40,7 +40,7 @@ COPY --from=build /workspaces/dist ./
 FROM versioneddevcontainer AS devcontainer
 WORKDIR /workspaces
 ENV APP_ENV=local
-ENV APP_VERSION=latest
+ENV APP_VERSION=dev
 ENV NODE_ENV=development
 ADD --chmod=755 https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 /usr/local/bin/yq
 RUN <<EOF

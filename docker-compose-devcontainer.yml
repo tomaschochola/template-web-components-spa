@@ -10,7 +10,7 @@ services:
     command: 'sleep infinity'
     environment:
       APP_ENV: 'local'
-      APP_VERSION: 'latest'
+      APP_VERSION: 'dev'
       NODE_ENV: 'development'
     networks:
       - 'devcontainer'
