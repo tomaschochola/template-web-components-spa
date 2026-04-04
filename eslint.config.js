@@ -36,4 +36,9 @@ export default new Eslint()
   .reactHooks()
   .sonarjs()
   .typescriptDisabled({ files: [...selectors.rootEcmaScript] })
+  .add({
+    rules: {
+      'sonarjs/cognitive-complexity': 'off',
+    },
+  })
   .build();
