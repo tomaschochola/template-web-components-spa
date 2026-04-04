@@ -10,7 +10,7 @@
  * @see {@link https://github.com/sponsors/tomaschochola} GitHub Sponsors
  */
 
-import type { NavigateOptions, To } from 'react-router-dom';
+import type { NavigateOptions, To } from 'react-router';
 
 declare module '@react-types/shared' {
   interface RouterConfig {

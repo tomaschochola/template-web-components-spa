@@ -13,7 +13,7 @@
 import { StrictMode } from 'react';
 import { RouterProvider as AriaRouterProvider } from 'react-aria';
 import { createRoot } from 'react-dom/client';
-import { RouterProvider, useHref, type NavigateOptions, type To } from 'react-router-dom';
+import { RouterProvider, useHref, type NavigateOptions, type To } from 'react-router';
 import { ErrorBoundary } from './boundaries/ErrorBoundary';
 import { LocaleProvider } from './lang/trans';
 import { createRouter } from './router';

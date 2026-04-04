@@ -11,7 +11,7 @@
  */
 
 import { useEffect, type ReactElement } from 'react';
-import { useRouteError } from 'react-router-dom';
+import { useRouteError } from 'react-router';
 
 interface RouteErrorBoundaryProps {
   children?: ReactElement;

@@ -6,7 +6,7 @@
   },
   "bugs": {
     "email": "tomaschochola@tomaschochola.cz",
-    "url": "https://github.com/tomaschochola/template-php-quickmux/issues"
+    "url": "https://github.com/tomaschochola/template-react-spa/issues"
   },
   "contributors": [
     {
@@ -35,12 +35,12 @@
     "react": "^19.2.4",
     "react-aria": "^3.47.0",
     "react-dom": "^19.2.4",
-    "react-router-dom": "^7.13.2",
+    "react-router": "^7.14.0",
     "react-stately": "^3.45.0",
     "sanitize.css": "^13.0.0",
     "web-vitals": "^5.2.0"
   },
-  "description": "@tomaschochola/template-php-quickmux",
+  "description": "@tomaschochola/template-react-spa",
   "devDependencies": {
     "@axe-core/playwright": "^4.11.1",
     "@playwright/test": "^1.59.1",
@@ -59,17 +59,17 @@
     "type": "github",
     "url": "https://github.com/sponsors/tomaschochola"
   },
-  "homepage": "https://github.com/tomaschochola/template-php-quickmux",
+  "homepage": "https://github.com/tomaschochola/template-react-spa",
   "keywords": [
     "tomaschochola",
     "TomasChochola",
     "Tomas Chochola",
     "Tomáš Chochola",
-    "template-php-quickmux"
+    "template-react-spa"
   ],
   "license": "CC-BY-ND-4.0",
-  "name": "@tomaschochola/template-php-quickmux",
-  "repository": "github:tomaschochola/template-php-quickmux",
-  "sideEffects": false,
+  "name": "@tomaschochola/template-react-spa",
+  "repository": "github:tomaschochola/template-react-spa",
+  "sideEffects": true,
   "type": "module"
 }

@@ -17,7 +17,7 @@ import {
   type ReactElement,
   type ReactNode,
 } from 'react';
-import { Await } from 'react-router-dom';
+import { Await } from 'react-router';
 import { UNLIMITED_PROMISE } from '../helpers/promises';
 
 export interface SuspenseAwaitProps<T> {

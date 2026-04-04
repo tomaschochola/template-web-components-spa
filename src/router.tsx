@@ -10,7 +10,7 @@
  * @see {@link https://github.com/sponsors/tomaschochola} GitHub Sponsors
  */
 
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router';
 import { RouteErrorBoundary } from './boundaries/RouteErrorBoundary';
 import { INDEX_USERS_FETCHER, indexUsersFetcher } from './fetchers/indexUsersFetcher';
 import { IndexRoute } from './routes/IndexRoute';
