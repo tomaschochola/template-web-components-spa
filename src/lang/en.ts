@@ -10,9 +10,7 @@
  * @see {@link https://github.com/sponsors/tomaschochola} GitHub Sponsors
  */
 
-import type { Strings } from './cs';
-
-const en: Strings = {
+const en = {
   'routes.index.h1': 'Hello world!',
   'routes.index.seo.description': 'Introduction page of the application',
   'routes.index.seo.keywords': 'Home, introduction, main page',
@@ -22,5 +20,7 @@ const en: Strings = {
   'routes.not_found.seo.keywords': 'Page not found, error 404',
   'routes.not_found.seo.title': 'Page not found',
 };
+
+export type Strings = typeof en;
 
 export { en };

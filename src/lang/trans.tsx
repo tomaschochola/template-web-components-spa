@@ -13,7 +13,7 @@
 import { use, useEffect, useState, type ReactElement } from 'react';
 import { I18nProvider, useLocale, useLocalizedStringFormatter } from 'react-aria';
 import { wrapPromise } from '../helpers/promises';
-import type { Strings } from './cs';
+import type { Strings } from './en';
 import { useDocumentLang } from './seo';
 
 const cache = new Map<string, Promise<Strings>>();
@@ -41,19 +41,12 @@ function getStrings(locale: string): Promise<Strings> {
 
   let loader;
 
-  switch (locale) {
-    case 'cs':
-      loader = import('./cs').then((module) => module.cs);
-
-      break;
-
-    case 'en':
-      loader = import('./en').then((module) => module.en);
-
-      break;
-
-    default:
-      throw new Error(`Locale ${locale} not found`);
+  if (locale === 'cs') {
+    loader = import('./cs').then((module) => module.cs);
+  } else if (locale === 'en') {
+    loader = import('./en').then((module) => module.en);
+  } else {
+    throw new Error(`Locale ${locale} not found`);
   }
 
   const promise = wrapPromise(loader);
@@ -151,7 +144,7 @@ export function LocaleProvider({ children }: LocaleProviderProps): ReactElement 
     };
   }, []);
 
-  const final = filterLocale(locale) ?? filterLocale(defaultLocale) ?? 'cs';
+  const final = filterLocale(locale) ?? filterLocale(defaultLocale) ?? 'en';
 
   useDocumentLang(final);
 

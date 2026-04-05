@@ -12,10 +12,10 @@
 
 import { useEffect, type ReactElement } from 'react';
 import { useFetcher } from 'react-router';
-import { SuspenseValue } from '../components/SupsenseValue';
 import { INDEX_USERS_FETCHER, type IndexUsersFetcherInterface } from '../fetchers/indexUsersFetcher';
 import { useSeo } from '../lang/seo';
 import { useTrans } from '../lang/trans';
+import { SuspenseValue } from '../suspenses/SupsenseValue';
 
 export function IndexRoute(): ReactElement {
   const trans = useTrans();

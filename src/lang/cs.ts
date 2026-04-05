@@ -10,7 +10,9 @@
  * @see {@link https://github.com/sponsors/tomaschochola} GitHub Sponsors
  */
 
-const cs = {
+import type { Strings } from './en';
+
+const cs: Strings = {
   'routes.index.h1': 'Ahoj světe!',
   'routes.index.seo.description': 'Úvodní stránka aplikace',
   'routes.index.seo.keywords': 'Domů, úvod, hlavní stránka',
@@ -20,7 +22,5 @@ const cs = {
   'routes.not_found.seo.keywords': 'Stránka nenalezena, chyba 404',
   'routes.not_found.seo.title': 'Stránka nenalezena',
 };
-
-export type Strings = typeof cs;
 
 export { cs };
