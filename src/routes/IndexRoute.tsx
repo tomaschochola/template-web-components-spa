@@ -15,7 +15,7 @@ import { useFetcher } from 'react-router';
 import { INDEX_USERS_FETCHER, type IndexUsersFetcherInterface } from '../fetchers/indexUsersFetcher';
 import { useSeo } from '../lang/seo';
 import { useTrans } from '../lang/trans';
-import { SuspenseValue } from '../suspenses/SupsenseValue';
+import { SuspenseValue } from '../suspenses/SuspenseValue';
 
 export function IndexRoute(): ReactElement {
   const trans = useTrans();

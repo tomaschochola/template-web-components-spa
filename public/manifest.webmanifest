@@ -1,5 +1,5 @@
 {
-  "background_color": "white",
+  "background_color": "#fdf7ff",
   "description": "tomaschochola/template-react-spa",
   "display": "standalone",
   "display_override": ["window-controls-overlay"],
@@ -76,5 +76,5 @@
   "scope": "/",
   "short_name": "tomaschochola/template-react-spa",
   "start_url": "/",
-  "theme_color": "white"
+  "theme_color": "#5b4497"
 }

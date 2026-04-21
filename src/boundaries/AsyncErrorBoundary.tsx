@@ -19,7 +19,7 @@ interface AsyncErrorBoundaryProps {
   replace?: URL;
 }
 
-export function AsyncErrorBoundary({ children, assign, replace }: AsyncErrorBoundaryProps): ReactElement | undefined {
+export function AsyncErrorBoundary({ children, assign, replace }: Readonly<AsyncErrorBoundaryProps>): ReactElement | undefined {
   const error = useAsyncError();
 
   useEffect(() => {

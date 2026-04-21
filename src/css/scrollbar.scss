@@ -11,9 +11,17 @@
  */
 
 :root {
-  min-height: 100vh;
-  background-color: #fdf7ff;
-  color: #352f43;
-  scrollbar-color: #7e778e transparent;
-  font-family: 'Google Sans Flex', 'Roboto', 'Noto Sans', system-ui, sans-serif;
+  scrollbar-width: none;
+}
+
+@media screen and (width >= 600px) and (width <= 1199px) {
+  :root {
+    scrollbar-width: thin;
+  }
+}
+
+@media screen and (width >= 1200px) {
+  :root {
+    scrollbar-width: auto;
+  }
 }

@@ -13,12 +13,12 @@
 import type { LoaderFunctionArgs } from 'react-router';
 
 interface User {
-  id: string;
-  name: string;
-  username: string;
-  email: string;
-  phone: string;
-  website: string;
+  readonly id: string;
+  readonly name: string;
+  readonly username: string;
+  readonly email: string;
+  readonly phone: string;
+  readonly website: string;
 }
 
 function assertUserArray(un: unknown): un is User[] {

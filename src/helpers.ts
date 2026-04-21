@@ -10,10 +10,16 @@
  * @see {@link https://github.com/sponsors/tomaschochola} GitHub Sponsors
  */
 
-:root {
-  min-height: 100vh;
-  background-color: #fdf7ff;
-  color: #352f43;
-  scrollbar-color: #7e778e transparent;
-  font-family: 'Google Sans Flex', 'Roboto', 'Noto Sans', system-ui, sans-serif;
+import type { CSSProperties } from 'react';
+
+export function mergeStyles(...properties: (CSSProperties | null | undefined | boolean)[]): CSSProperties {
+  const result: CSSProperties = {};
+
+  for (const prop of properties) {
+    if (typeof prop === 'object' && prop !== null) {
+      Object.assign(result, prop);
+    }
+  }
+
+  return result;
 }

@@ -10,10 +10,7 @@
  * @see {@link https://github.com/sponsors/tomaschochola} GitHub Sponsors
  */
 
-:root {
-  min-height: 100vh;
-  background-color: #fdf7ff;
-  color: #352f43;
-  scrollbar-color: #7e778e transparent;
-  font-family: 'Google Sans Flex', 'Roboto', 'Noto Sans', system-ui, sans-serif;
-}
+@use './sanitize';
+@use './base';
+@use './scrollbar';
+@use './typography';

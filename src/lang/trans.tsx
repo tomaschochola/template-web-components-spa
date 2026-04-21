@@ -41,10 +41,10 @@ function getStrings(locale: string): Promise<Strings> {
 
   let loader;
 
-  if (locale === 'cs') {
-    loader = import('./cs').then((module) => module.cs);
-  } else if (locale === 'en') {
+  if (locale === 'en') {
     loader = import('./en').then((module) => module.en);
+  } else if (locale === 'cs') {
+    loader = import('./cs').then((module) => module.cs);
   } else {
     throw new Error(`Locale ${locale} not found`);
   }
@@ -73,11 +73,11 @@ export function useTrans() {
 }
 
 export function filterLocale(locale: string | null): string | null {
+  if (locale?.startsWith('en') === true) return 'en';
+
   if (locale?.startsWith('cs') === true) return 'cs';
 
   if (locale?.startsWith('sk') === true) return 'cs';
-
-  if (locale?.startsWith('en') === true) return 'en';
 
   return null;
 }
@@ -86,7 +86,7 @@ interface LocaleProviderProps {
   readonly children: ReactElement;
 }
 
-export function LocaleProvider({ children }: LocaleProviderProps): ReactElement {
+export function LocaleProvider({ children }: Readonly<LocaleProviderProps>): ReactElement {
   const { locale: defaultLocale } = useLocale();
 
   const [locale, setLocale] = useState<string | null>(() => filterLocale(localStorage.getItem('locale')));
@@ -123,8 +123,8 @@ export function LocaleProvider({ children }: LocaleProviderProps): ReactElement 
     if (typeof requestIdleCallback === 'function' && typeof cancelIdleCallback === 'function') {
       const requestIdleTimeout = requestIdleCallback(
         () => {
-          void getStrings('cs');
           void getStrings('en');
+          void getStrings('cs');
         },
         { timeout: 10000 },
       );
@@ -135,8 +135,8 @@ export function LocaleProvider({ children }: LocaleProviderProps): ReactElement 
     }
 
     const timeout = setTimeout(() => {
-      void getStrings('cs');
       void getStrings('en');
+      void getStrings('cs');
     }, 10000);
 
     return () => {

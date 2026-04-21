@@ -19,7 +19,7 @@ interface RouteErrorBoundaryProps {
   replace?: URL;
 }
 
-export function RouteErrorBoundary({ children, assign, replace }: RouteErrorBoundaryProps): ReactElement | undefined {
+export function RouteErrorBoundary({ children, assign, replace }: Readonly<RouteErrorBoundaryProps>): ReactElement | undefined {
   const error = useRouteError();
 
   useEffect(() => {
