@@ -18,9 +18,11 @@ import { ErrorBoundary } from './boundaries/ErrorBoundary';
 import { LocaleProvider } from './lang/trans';
 import { createRouter } from './router';
 
-const el = document.createElement('div');
+const rootElement = document.getElementById('root');
 
-document.body.appendChild(el);
+if (rootElement === null) {
+  throw new Error('Missing root element.');
+}
 
 const router = createRouter();
 
@@ -28,7 +30,7 @@ function handleNavigate(to: To, opts: NavigateOptions | undefined): void {
   void router.navigate(to, opts);
 }
 
-createRoot(el).render(
+createRoot(rootElement).render(
   <StrictMode>
     <ErrorBoundary>
       <AriaRouterProvider

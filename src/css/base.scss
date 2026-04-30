@@ -10,10 +10,24 @@
  * @see {@link https://github.com/sponsors/tomaschochola} GitHub Sponsors
  */
 
+:root,
+body,
+#root {
+  min-height: 100%;
+}
+
 :root {
-  min-height: 100vh;
+  color-scheme: only light;
+}
+
+:root,
+body {
   background-color: #fdf7ff;
   color: #352f43;
   scrollbar-color: #7e778e transparent;
   font-family: 'Google Sans Flex', 'Roboto', 'Noto Sans', system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
 }

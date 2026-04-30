@@ -15,25 +15,45 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="only light" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=overlays-content, viewport-fit=cover, shrink-to-fit=no" />
-
+    <title>tomaschochola/template-react-spa</title>
     <meta name="description" content="tomaschochola/template-react-spa" />
-    <meta name="keywords" content="tomaschochola, TomasChochola, Tomas Chochola, Tomáš Chochola, template-react-spa" />
     <meta name="author" content="Tomáš Chochola <tomaschochola@tomaschochola.cz>" />
+    <meta name="application-name" content="tomaschochola/template-react-spa" />
+    <meta name="robots" content="index, follow" />
 
-    <meta name="theme-color" content="white" />
+    <link rel="canonical" href="https://tomaschochola.cz/" />
+
+    <meta name="theme-color" content="#fdf7ff" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="tomaschochola/template-react-spa" />
+    <meta property="og:title" content="tomaschochola/template-react-spa" />
+    <meta property="og:description" content="tomaschochola/template-react-spa" />
+    <meta property="og:url" content="https://tomaschochola.cz/" />
+    <meta property="og:image" content="https://tomaschochola.cz/social/og-image.png" />
+    <meta property="og:image:secure_url" content="https://tomaschochola.cz/social/og-image.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="tomaschochola/template-react-spa preview" />
+    <meta property="og:locale" content="en_US" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="tomaschochola/template-react-spa" />
+    <meta name="twitter:description" content="tomaschochola/template-react-spa" />
+    <meta name="twitter:image" content="https://tomaschochola.cz/social/og-image.png" />
+    <meta name="twitter:image:alt" content="tomaschochola/template-react-spa preview" />
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="tomaschochola/template-react-spa" />
 
-    <title>tomaschochola/template-react-spa</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap" />
 
     <!-- webpackIgnore: true -->
     <link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48" href="/favicon.ico" />
@@ -42,25 +62,39 @@
     <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg" />
 
     <!-- webpackIgnore: true -->
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+
+    <!-- webpackIgnore: true -->
     <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="/apple-touch-icon.png" />
 
     <!-- webpackIgnore: true -->
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-
-    <!-- webpackIgnore: true -->
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-
-    <!-- webpackIgnore: true -->
-    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
-
-    <!-- webpackIgnore: true -->
-    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192x192.png" />
-
-    <!-- webpackIgnore: true -->
-    <link rel="icon" type="image/png" sizes="512x512" href="/icon-512x512.png" />
-
-    <!-- webpackIgnore: true -->
     <link rel="manifest" href="/manifest.webmanifest" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@id": "https://tomaschochola.cz/#website",
+            "@type": "WebSite",
+            "description": "tomaschochola/template-react-spa",
+            "inLanguage": "en",
+            "name": "tomaschochola/template-react-spa",
+            "url": "https://tomaschochola.cz/"
+          },
+          {
+            "@id": "https://tomaschochola.cz/#person",
+            "@type": "Person",
+            "name": "Tomáš Chochola",
+            "sameAs": ["https://github.com/tomaschochola"],
+            "url": "https://tomaschochola.cz/"
+          }
+        ]
+      }
+    </script>
   </head>
-  <body></body>
+  <body>
+    <div id="root"></div>
+    <noscript>This app requires JavaScript.</noscript>
+  </body>
 </html>

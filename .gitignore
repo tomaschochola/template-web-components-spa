@@ -20,6 +20,10 @@
 
 # icons
 /public/*icon*
+/public/icons
+
+# og
+/public/social
 
 # temporary
 /package-lock.json

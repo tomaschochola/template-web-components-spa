@@ -42,6 +42,7 @@ import { onCLS, onFCP, onINP, onLCP, onTTFB, type Metric } from 'web-vitals';
 
 const APP_NAME = process.env['APP_NAME'] ?? '';
 const APP_VERSION = process.env['APP_VERSION'] ?? '';
+const APP_ENV = process.env['APP_ENV'] ?? '';
 const WEBPACK_MODE = process.env['WEBPACK_MODE'] ?? '';
 const OTLP_API_KEY = process.env['OTLP_API_KEY'] ?? '';
 
@@ -53,6 +54,10 @@ if (APP_VERSION === '') {
   throw new Error('APP_VERSION');
 }
 
+if (APP_ENV === '') {
+  throw new Error('APP_ENV');
+}
+
 if (WEBPACK_MODE === '') {
   throw new Error('WEBPACK_MODE');
 }
@@ -62,7 +67,7 @@ const resource = defaultResource()
     resourceFromAttributes({
       [ATTR_SERVICE_NAME]: APP_NAME,
       [ATTR_SERVICE_VERSION]: APP_VERSION,
-      [ATTR_DEPLOYMENT_ENVIRONMENT_NAME]: WEBPACK_MODE,
+      [ATTR_DEPLOYMENT_ENVIRONMENT_NAME]: APP_ENV,
       [ATTR_USER_AGENT_ORIGINAL]: navigator.userAgent,
     }),
   )

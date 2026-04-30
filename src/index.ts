@@ -10,22 +10,28 @@
  * @see {@link https://github.com/sponsors/tomaschochola} GitHub Sponsors
  */
 
-document.querySelectorAll('link[rel="preload"][as="style"]').forEach((link) => {
-  if (link instanceof HTMLLinkElement) {
-    link.rel = 'stylesheet';
-  }
-});
-
 import 'core-js/actual';
-
+import './bootstrap';
 import './observability';
 
-navigator.serviceWorker.register('/sw.js')
-  .then(() => {
-    console.log('Service Worker registered successfully.');
-  })
-  .catch(() => {
-    console.error('Service Worker registration failed.');
-  });
+function onWindowLoad(callback: () => void): void {
+  if (document.readyState === 'complete') {
+    callback();
+  } else {
+    window.addEventListener('load', callback, { once: true });
+  }
+}
 
-void import('./bootstrap');
+function registerServiceWorker(): void {
+  if (process.env['WEBPACK_MODE'] !== 'production' || !('serviceWorker' in navigator)) {
+    return;
+  }
+
+  onWindowLoad(() => {
+    void navigator.serviceWorker.register('/sw.js').catch((error: unknown) => {
+      console.error('Service Worker registration failed.', error);
+    });
+  });
+}
+
+registerServiceWorker();
