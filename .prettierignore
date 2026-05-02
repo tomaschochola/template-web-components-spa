@@ -15,12 +15,11 @@
 
 # compiled files
 /dist
+/generated
+/tmp
 
 # playwright
 /test-results
-
-# icons
-/public/*icon*
 
 # svg
 *.svg

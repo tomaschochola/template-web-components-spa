@@ -27,7 +27,7 @@ export default new Eslint()
     ...globals.es2024,
   })
   .ignores()
-  .ignores(['node_modules', 'dist', 'test-results'])
+  .ignores(['node_modules', 'dist', 'generated', 'tmp', 'test-results'])
   .recommended()
   .typescript()
   .stylistic()

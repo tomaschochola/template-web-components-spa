@@ -14,16 +14,11 @@
 
 # compiled files
 /dist
+/generated
+/tmp
 
 # playwright
 /test-results
-
-# icons
-/public/*icon*
-/public/icons
-
-# og
-/public/social
 
 # temporary
 /package-lock.json

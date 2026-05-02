@@ -7,30 +7,6 @@ SHELL := /bin/bash
 # Options
 export DEBIAN_FRONTEND := noninteractive
 
-# Assets
-ICON_SRC := ./assets/icons/icon.svg
-PUBLIC_DIR := ./public
-ICONS_DIR := $(PUBLIC_DIR)/icons
-SOCIAL_DIR := $(PUBLIC_DIR)/social
-
-ICON_BG := \#5b4497
-MASKABLE_ICON_BG := $(ICON_BG)
-OG_BG := \#141218
-APP_ICON_MODE ?= fullbleed
-APP_ICON_LOGO_180 := 144
-APP_ICON_LOGO_192 := 154
-APP_ICON_LOGO_512 := 410
-APP_ICON_LOGO_1024 := 820
-APP_ICON_OFFSET := +0+0
-MASKABLE_LOGO_192 := 108
-MASKABLE_LOGO_512 := 290
-MASKABLE_LOGO_1024 := 580
-MASKABLE_ICON_OFFSET := +0+0
-OG_VIEWPORT_SIZE ?= 1200,630
-OG_OUTPUT ?= $(SOCIAL_DIR)/og-image.png
-
-render_app_icon = case "$(APP_ICON_MODE)" in fullbleed) magick -background '$(ICON_BG)' -density 1024 $(ICON_SRC) -alpha remove -alpha off -resize $(1)x$(1)\! -strip png32:$(3) ;; symbol) magick -size $(1)x$(1) canvas:'$(ICON_BG)' \( +size -background none -density 1024 $(ICON_SRC) -alpha on -resize $(2)x$(2)\! \) -gravity center -geometry $(APP_ICON_OFFSET) -composite -strip png32:$(3) ;; *) echo 'Unsupported APP_ICON_MODE "$(APP_ICON_MODE)"; use "fullbleed" or "symbol".' >&2; exit 2 ;; esac
-
 # Goals
 .PHONY: commit
 commit: distclean update fix check
@@ -63,22 +39,8 @@ update: npm_update
 clean:
 	rm -rf ./node_modules
 	rm -rf ./dist
-	rm -rf $(PUBLIC_DIR)/apple-touch-icon.png
-	rm -rf $(PUBLIC_DIR)/favicon.ico
-	rm -rf $(PUBLIC_DIR)/favicon.svg
-	rm -rf $(PUBLIC_DIR)/favicon-16x16.png
-	rm -rf $(PUBLIC_DIR)/favicon-32x32.png
-	rm -rf $(PUBLIC_DIR)/favicon-48x48.png
-	rm -rf $(PUBLIC_DIR)/favicon-96x96.png
-	rm -rf $(PUBLIC_DIR)/icon-192x192.png
-	rm -rf $(PUBLIC_DIR)/icon-192x192-maskable.png
-	rm -rf $(PUBLIC_DIR)/icon-512x512.png
-	rm -rf $(PUBLIC_DIR)/icon-512x512-maskable.png
-	rm -rf $(ICONS_DIR)
-	rm -rf $(PUBLIC_DIR)/og.jpg
-	rm -rf $(PUBLIC_DIR)/og.webp
-	rm -rf $(SOCIAL_DIR)
-	rm -rf ./temp-og.png
+	rm -rf ./generated
+	rm -rf ./tmp
 
 .PHONY: distclean
 distclean: clean
@@ -117,7 +79,7 @@ typescript_check: ./node_modules ./tsconfig.json
 	npm exec --ignore-scripts -- tsc --noEmit
 
 .PHONY: playwright_test
-playwright_test: ./node_modules ./playwright.config.js
+playwright_test: ./node_modules ./playwright.config.js generated
 	npm exec --ignore-scripts -- playwright test
 
 .PHONY: playwright_install
@@ -139,11 +101,11 @@ npm_update: ./package.json
 	npm update --ignore-scripts --install-links --include=prod --include=dev --include=peer --include=optional
 
 .PHONY: postcreate
-postcreate: install favicons
+postcreate: install
 
 .PHONY: start serve server dev
-start serve server dev: ./node_modules ./package.json ./package-lock.json favicons
-	npm exec --ignore-scripts -- webpack-cli serve --mode=${NODE_ENV} --config-node-env=${NODE_ENV} --env APP_ENV=${APP_ENV}
+start serve server dev: ./node_modules ./package.json ./package-lock.json generated
+	npm exec --ignore-scripts -- webpack-cli serve --mode=$${NODE_ENV:-development} --config-node-env=$${NODE_ENV:-development} --env APP_ENV=$${APP_ENV:-local}
 
 .PHONY: image
 image:
@@ -151,7 +113,7 @@ image:
 
 .PHONY: deploy
 deploy:
-	docker stack deploy -c ./docker-compose.yml -c ./docker-compose-swarm.yml --with-registry-auth --prune --detach=false --resolve-image=always ${CI_PROJECT_PATH_SLUG:-template-express-api}
+	docker stack deploy -c ./docker-compose.yml -c ./docker-compose-swarm.yml --with-registry-auth --prune --detach=false --resolve-image=always $${CI_PROJECT_PATH_SLUG:-template-react-spa}
 
 .PHONY: up
 up:
@@ -176,18 +138,17 @@ devcontainer:
 	docker compose -f ./docker-compose.yml -f ./docker-compose-devcontainer.yml down --remove-orphans
 
 .PHONY: build
-build: favicons
-	npm exec --ignore-scripts -- webpack-cli build --mode=${NODE_ENV} --config-node-env=${NODE_ENV} --env APP_ENV=${APP_ENV}
+build: generated
+	npm exec --ignore-scripts -- webpack-cli build --mode=$${NODE_ENV:-development} --config-node-env=$${NODE_ENV:-development} --env APP_ENV=$${APP_ENV:-local}
 
 .PHONY: og
-og: ./node_modules ./assets/og.html $(ICON_SRC)
-	rm -f ./temp-og.png
-	rm -f $(PUBLIC_DIR)/og.jpg $(PUBLIC_DIR)/og.webp
-	mkdir -p $(SOCIAL_DIR)
-	mkdir -p $(dir $(OG_OUTPUT))
-	npm exec --ignore-scripts -- playwright screenshot --browser=chromium --color-scheme=light --viewport-size=$(OG_VIEWPORT_SIZE) --wait-for-selector='html[data-og-ready="true"]' --timeout=60000 file://${CURDIR}/assets/og.html ./temp-og.png
-	magick ./temp-og.png -background '$(OG_BG)' -alpha remove -alpha off -colorspace sRGB -strip png32:$(OG_OUTPUT)
-	rm ./temp-og.png
+og: ./node_modules ./webpack.config.og.js ./og/og.html ./og/og.scss ./og/og.ts ./assets/icon.svg
+	rm -rf ./tmp/og
+	rm -f ./generated/og/og-image.png
+	mkdir -p ./generated/og
+	npm exec --ignore-scripts -- webpack-cli build --mode=production --config-node-env=production --config ./webpack.config.og.js --env APP_ENV=$${APP_ENV:-local}
+	npm exec --ignore-scripts -- playwright screenshot --browser=chromium --color-scheme=light --viewport-size=1200,630 --timeout=60000 file://${CURDIR}/./tmp/og/og.html ./generated/og/og-image.png
+	rm -rf ./tmp/og
 
 .PHONY: local
 local: export APP_ENV := local
@@ -212,35 +173,94 @@ uat: build
 .PHONY: production
 production: export APP_ENV := production
 production: export NODE_ENV := production
-production: og
-	${MAKE} build
+production: generated
+	npm exec --ignore-scripts -- webpack-cli build --mode=$${NODE_ENV:-development} --config-node-env=$${NODE_ENV:-development} --env APP_ENV=$${APP_ENV:-local}
 
-.PHONY: favicons
-favicons: $(ICON_SRC)
-	rm -f $(PUBLIC_DIR)/favicon-16x16.png $(PUBLIC_DIR)/favicon-32x32.png $(PUBLIC_DIR)/favicon-48x48.png
-	rm -f $(PUBLIC_DIR)/icon-192x192.png $(PUBLIC_DIR)/icon-192x192-maskable.png $(PUBLIC_DIR)/icon-512x512.png $(PUBLIC_DIR)/icon-512x512-maskable.png
-	mkdir -p $(ICONS_DIR)
-	magick -background none -density 1024 $(ICON_SRC) -alpha on -define icon:auto-resize=48,32,16 $(PUBLIC_DIR)/favicon.ico
-	magick -background none -density 1024 $(ICON_SRC) -alpha on -resize 96x96 -strip png32:$(PUBLIC_DIR)/favicon-96x96.png
-	cp $(ICON_SRC) $(PUBLIC_DIR)/favicon.svg
-	@$(call render_app_icon,180,$(APP_ICON_LOGO_180),$(PUBLIC_DIR)/apple-touch-icon.png)
-	@$(call render_app_icon,192,$(APP_ICON_LOGO_192),$(ICONS_DIR)/icon-192x192.png)
-	@$(call render_app_icon,512,$(APP_ICON_LOGO_512),$(ICONS_DIR)/icon-512x512.png)
-	@$(call render_app_icon,1024,$(APP_ICON_LOGO_1024),$(ICONS_DIR)/icon-1024x1024.png)
-	magick -size 192x192 canvas:'$(MASKABLE_ICON_BG)' \( +size -background none -density 1024 $(ICON_SRC) -alpha on -resize $(MASKABLE_LOGO_192)x$(MASKABLE_LOGO_192)\! \) -gravity center -geometry $(MASKABLE_ICON_OFFSET) -composite -strip png32:$(ICONS_DIR)/maskable-icon-192x192.png
-	magick -size 512x512 canvas:'$(MASKABLE_ICON_BG)' \( +size -background none -density 1024 $(ICON_SRC) -alpha on -resize $(MASKABLE_LOGO_512)x$(MASKABLE_LOGO_512)\! \) -gravity center -geometry $(MASKABLE_ICON_OFFSET) -composite -strip png32:$(ICONS_DIR)/maskable-icon-512x512.png
-	magick -size 1024x1024 canvas:'$(MASKABLE_ICON_BG)' \( +size -background none -density 1024 $(ICON_SRC) -alpha on -resize $(MASKABLE_LOGO_1024)x$(MASKABLE_LOGO_1024)\! \) -gravity center -geometry $(MASKABLE_ICON_OFFSET) -composite -strip png32:$(ICONS_DIR)/maskable-icon-1024x1024.png
+.PHONY: generated
+generated: symbol_icon og
+
+.PHONY: symbol_icon
+symbol_icon: ./assets/icon.svg
+	mkdir -p ./generated/icons
+	rm -rf ./tmp/favicons
+	mkdir -p ./tmp/favicons
+	rm -f ./generated/favicon.svg ./generated/favicon.ico
+	rm -f ./generated/favicon-16x16.png ./generated/favicon-32x32.png ./generated/favicon-48x48.png ./generated/favicon-96x96.png
+	rm -f ./generated/apple-touch-icon.png
+	rm -f ./generated/icons/icon-192x192.png ./generated/icons/icon-512x512.png ./generated/icons/icon-1024x1024.png
+	rm -f ./generated/icons/maskable-icon-192x192.png ./generated/icons/maskable-icon-512x512.png ./generated/icons/maskable-icon-1024x1024.png
+	svgo --multipass --quiet --input "./assets/icon.svg" --output "./generated/favicon.svg"
+	resvg --width 16 --height 16 "./generated/favicon.svg" "./tmp/favicons/favicon16.png"
+	sharp -i "./tmp/favicons/favicon16.png" -o "./generated/favicon-16x16.png" -f png --compressionLevel 9 --adaptiveFiltering toColorspace srgb
+	resvg --width 32 --height 32 "./generated/favicon.svg" "./tmp/favicons/favicon32.png"
+	sharp -i "./tmp/favicons/favicon32.png" -o "./generated/favicon-32x32.png" -f png --compressionLevel 9 --adaptiveFiltering toColorspace srgb
+	resvg --width 48 --height 48 "./generated/favicon.svg" "./tmp/favicons/favicon48.png"
+	sharp -i "./tmp/favicons/favicon48.png" -o "./generated/favicon-48x48.png" -f png --compressionLevel 9 --adaptiveFiltering toColorspace srgb
+	resvg --width 96 --height 96 "./generated/favicon.svg" "./tmp/favicons/favicon96.png"
+	sharp -i "./tmp/favicons/favicon96.png" -o "./generated/favicon-96x96.png" -f png --compressionLevel 9 --adaptiveFiltering toColorspace srgb
+	icotool --create --output "./generated/favicon.ico" "./generated/favicon-16x16.png" "./generated/favicon-32x32.png" "./generated/favicon-48x48.png"
+	resvg --width 144 --height 144 "./generated/favicon.svg" "./tmp/favicons/apple.png"
+	sharp -i "./tmp/favicons/apple.png" -o "./generated/apple-touch-icon.png" -f png --compressionLevel 9 --adaptiveFiltering extend 18 18 18 18 --background '#141218' -- flatten '#141218' -- toColorspace srgb
+	resvg --width 154 --height 154 "./generated/favicon.svg" "./tmp/favicons/icon192.png"
+	sharp -i "./tmp/favicons/icon192.png" -o "./generated/icons/icon-192x192.png" -f png --compressionLevel 9 --adaptiveFiltering extend 19 19 19 19 --background '#141218' -- flatten '#141218' -- toColorspace srgb
+	resvg --width 410 --height 410 "./generated/favicon.svg" "./tmp/favicons/icon512.png"
+	sharp -i "./tmp/favicons/icon512.png" -o "./generated/icons/icon-512x512.png" -f png --compressionLevel 9 --adaptiveFiltering extend 51 51 51 51 --background '#141218' -- flatten '#141218' -- toColorspace srgb
+	resvg --width 820 --height 820 "./generated/favicon.svg" "./tmp/favicons/icon1024.png"
+	sharp -i "./tmp/favicons/icon1024.png" -o "./generated/icons/icon-1024x1024.png" -f png --compressionLevel 9 --adaptiveFiltering extend 102 102 102 102 --background '#141218' -- flatten '#141218' -- toColorspace srgb
+	resvg --width 108 --height 108 "./generated/favicon.svg" "./tmp/favicons/maskable192.png"
+	sharp -i "./tmp/favicons/maskable192.png" -o "./generated/icons/maskable-icon-192x192.png" -f png --compressionLevel 9 --adaptiveFiltering extend 42 42 42 42 --background '#141218' -- flatten '#141218' -- toColorspace srgb
+	resvg --width 288 --height 288 "./generated/favicon.svg" "./tmp/favicons/maskable512.png"
+	sharp -i "./tmp/favicons/maskable512.png" -o "./generated/icons/maskable-icon-512x512.png" -f png --compressionLevel 9 --adaptiveFiltering extend 112 112 112 112 --background '#141218' -- flatten '#141218' -- toColorspace srgb
+	resvg --width 576 --height 576 "./generated/favicon.svg" "./tmp/favicons/maskable1024.png"
+	sharp -i "./tmp/favicons/maskable1024.png" -o "./generated/icons/maskable-icon-1024x1024.png" -f png --compressionLevel 9 --adaptiveFiltering extend 224 224 224 224 --background '#141218' -- flatten '#141218' -- toColorspace srgb
+	rm -rf ./tmp/favicons
+
+.PHONY: fullbleed_icon
+fullbleed_icon: ./assets/icon.svg
+	mkdir -p ./generated/icons
+	rm -rf ./tmp/favicons
+	mkdir -p ./tmp/favicons
+	rm -f ./generated/favicon.svg ./generated/favicon.ico
+	rm -f ./generated/favicon-16x16.png ./generated/favicon-32x32.png ./generated/favicon-48x48.png ./generated/favicon-96x96.png
+	rm -f ./generated/apple-touch-icon.png
+	rm -f ./generated/icons/icon-192x192.png ./generated/icons/icon-512x512.png ./generated/icons/icon-1024x1024.png
+	rm -f ./generated/icons/maskable-icon-192x192.png ./generated/icons/maskable-icon-512x512.png ./generated/icons/maskable-icon-1024x1024.png
+	svgo --multipass --quiet --input "./assets/icon.svg" --output "./generated/favicon.svg"
+	resvg --width 16 --height 16 "./generated/favicon.svg" "./tmp/favicons/favicon16.png"
+	sharp -i "./tmp/favicons/favicon16.png" -o "./generated/favicon-16x16.png" -f png --compressionLevel 9 --adaptiveFiltering toColorspace srgb
+	resvg --width 32 --height 32 "./generated/favicon.svg" "./tmp/favicons/favicon32.png"
+	sharp -i "./tmp/favicons/favicon32.png" -o "./generated/favicon-32x32.png" -f png --compressionLevel 9 --adaptiveFiltering toColorspace srgb
+	resvg --width 48 --height 48 "./generated/favicon.svg" "./tmp/favicons/favicon48.png"
+	sharp -i "./tmp/favicons/favicon48.png" -o "./generated/favicon-48x48.png" -f png --compressionLevel 9 --adaptiveFiltering toColorspace srgb
+	resvg --width 96 --height 96 "./generated/favicon.svg" "./tmp/favicons/favicon96.png"
+	sharp -i "./tmp/favicons/favicon96.png" -o "./generated/favicon-96x96.png" -f png --compressionLevel 9 --adaptiveFiltering toColorspace srgb
+	icotool --create --output "./generated/favicon.ico" "./generated/favicon-16x16.png" "./generated/favicon-32x32.png" "./generated/favicon-48x48.png"
+	resvg --width 180 --height 180 --background '#141218' "./generated/favicon.svg" "./tmp/favicons/apple.png"
+	sharp -i "./tmp/favicons/apple.png" -o "./generated/apple-touch-icon.png" -f png --compressionLevel 9 --adaptiveFiltering flatten '#141218' -- toColorspace srgb
+	resvg --width 192 --height 192 --background '#141218' "./generated/favicon.svg" "./tmp/favicons/icon192.png"
+	sharp -i "./tmp/favicons/icon192.png" -o "./generated/icons/icon-192x192.png" -f png --compressionLevel 9 --adaptiveFiltering flatten '#141218' -- toColorspace srgb
+	resvg --width 512 --height 512 --background '#141218' "./generated/favicon.svg" "./tmp/favicons/icon512.png"
+	sharp -i "./tmp/favicons/icon512.png" -o "./generated/icons/icon-512x512.png" -f png --compressionLevel 9 --adaptiveFiltering flatten '#141218' -- toColorspace srgb
+	resvg --width 1024 --height 1024 --background '#141218' "./generated/favicon.svg" "./tmp/favicons/icon1024.png"
+	sharp -i "./tmp/favicons/icon1024.png" -o "./generated/icons/icon-1024x1024.png" -f png --compressionLevel 9 --adaptiveFiltering flatten '#141218' -- toColorspace srgb
+	resvg --width 192 --height 192 --background '#141218' "./generated/favicon.svg" "./tmp/favicons/maskable192.png"
+	sharp -i "./tmp/favicons/maskable192.png" -o "./generated/icons/maskable-icon-192x192.png" -f png --compressionLevel 9 --adaptiveFiltering flatten '#141218' -- toColorspace srgb
+	resvg --width 512 --height 512 --background '#141218' "./generated/favicon.svg" "./tmp/favicons/maskable512.png"
+	sharp -i "./tmp/favicons/maskable512.png" -o "./generated/icons/maskable-icon-512x512.png" -f png --compressionLevel 9 --adaptiveFiltering flatten '#141218' -- toColorspace srgb
+	resvg --width 1024 --height 1024 --background '#141218' "./generated/favicon.svg" "./tmp/favicons/maskable1024.png"
+	sharp -i "./tmp/favicons/maskable1024.png" -o "./generated/icons/maskable-icon-1024x1024.png" -f png --compressionLevel 9 --adaptiveFiltering flatten '#141218' -- toColorspace srgb
+	rm -rf ./tmp/favicons
 
 .PHONY: playwright_failed
-playwright_failed: ./node_modules ./playwright.config.js
+playwright_failed: ./node_modules ./playwright.config.js generated
 	npm exec --ignore-scripts -- playwright test --last-failed
 
 .PHONY: playwright_headed
-playwright_headed: ./node_modules ./playwright.config.js
+playwright_headed: ./node_modules ./playwright.config.js generated
 	npm exec --ignore-scripts -- playwright test --headed
 
 .PHONY: playwright_ui
-playwright_ui: ./node_modules ./playwright.config.js
+playwright_ui: ./node_modules ./playwright.config.js generated
 	npm exec --ignore-scripts -- playwright test --ui
 
 # Dependencies

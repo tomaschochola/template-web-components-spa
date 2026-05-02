@@ -10,23 +10,41 @@
  * @see {@link https://github.com/sponsors/tomaschochola} GitHub Sponsors
  */
 
-:root,
-body,
-#root {
-  min-height: 100%;
-}
+@use '../src/index';
 
 :root {
-  color-scheme: only light;
+  --ogiconsize: 8rem;
+  --ogfontsize: 11rem;
+  --oggap: 4rem;
 }
 
 :root,
 body {
-  background-color: #fdf7ff;
-  color: #352f43;
-  scrollbar-color: #7e778e transparent;
+  background-color: #141218;
+  color: #fffbff;
 }
 
-body {
+main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--oggap);
+}
+
+img {
+  width: var(--ogiconsize);
+  height: var(--ogiconsize);
+}
+
+h1 {
+  font-size: var(--ogfontsize);
+  font-weight: 900;
+}
+
+img,
+h2 {
+  vertical-align: middle;
+  line-height: 1;
+  white-space: nowrap;
   margin: 0;
 }

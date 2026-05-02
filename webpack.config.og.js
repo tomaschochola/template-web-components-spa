@@ -10,35 +10,22 @@
  * @see {@link https://github.com/sponsors/tomaschochola} GitHub Sponsors
  */
 
+import { fileURLToPath } from 'node:url';
+
 import { Webpack } from '@tomaschochola/tooling-webpack';
 
 // eslint-disable-next-line no-restricted-exports
 export default function (env, argv) {
   return new Webpack(env, argv)
     .entry({
-      index: ['./src/index.ts'],
+      og: ['./og/og.ts'],
     })
-    .defaults({
-      copy: true,
-      pwa: true,
-    })
-    .environment({
-      OTLP_API_KEY: env.OTLP_API_KEY ?? argv.otlpApiKey ?? process.env.OTLP_API_KEY ?? null,
-    })
+    .defaults()
+    .public('./')
+    .output(fileURLToPath(new URL('./tmp/og/', import.meta.url)))
     .html({
-      template: './src/index.html',
-      filename: 'index.html',
+      filename: 'og.html',
+      template: './og/og.html',
     })
-    .from('./generated')
-    .merge((_env, _argv, conf) => ({
-      ...conf,
-      ignoreWarnings: [
-        ...(conf.ignoreWarnings ?? []),
-        {
-          message: /Critical dependency: the request of a dependency is an expression/,
-          module: /node_modules[/\\]@protobufjs[/\\]inquire[/\\]/,
-        },
-      ],
-    }))
     .build();
 }

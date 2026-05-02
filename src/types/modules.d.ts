@@ -65,3 +65,5 @@ declare module '*&as=png' {
   // eslint-disable-next-line no-restricted-exports
   export default value;
 }
+
+declare module '*.scss';

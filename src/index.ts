@@ -10,6 +10,8 @@
  * @see {@link https://github.com/sponsors/tomaschochola} GitHub Sponsors
  */
 
+import './index.scss';
+
 import 'core-js/actual';
 import './bootstrap';
 import './observability';
