@@ -1,25 +1,9 @@
-[production]
-baseline widely available with downstream
-
-[development]
-baseline widely available
-
-[es2020]
-chrome >= 80
-edge >= 80
-firefox >= 80
-safari >= 14.1
-and_chr >= 80
-and_ff >= 80
-ios_saf >= 14.5
-samsung >= 13
-
-[es2015]
-chrome >= 51
-edge >= 15
-firefox >= 54
-safari >= 10
-and_chr >= 51
-and_ff >= 54
-ios_saf >= 10
-samsung >= 5
+and_chr >= 110
+and_ff >= 146
+chrome >= 110
+edge >= 110
+firefox >= 146
+ios_saf >= 16.4
+opera >= 96
+safari >= 16.4
+samsung >= 21

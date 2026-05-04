@@ -10,35 +10,17 @@
  * @see {@link https://github.com/sponsors/tomaschochola} GitHub Sponsors
  */
 
-import { Eslint, selectors } from '@tomaschochola/tooling-eslint';
-import globals from 'globals';
+import { ESLint } from '@tomaschochola/tooling-eslint';
 
 // eslint-disable-next-line no-restricted-exports
-export default new Eslint()
-  .add({
-    files: [...selectors.globalEcmaScript],
-  })
-  .globals({
-    ...globals.node,
-    ...globals.es2024,
-  }, { files: [...selectors.rootEcmaScript] })
-  .globals({
-    ...globals.browser,
-    ...globals.es2024,
-  })
-  .ignores()
-  .ignores(['node_modules', 'dist', 'generated', 'tmp', 'test-results'])
-  .recommended()
-  .typescript()
-  .stylistic()
-  .react()
-  .jsxA11y()
-  .reactHooks()
-  .sonarjs()
-  .typescriptDisabled({ files: [...selectors.rootEcmaScript] })
-  .add({
+export default new ESLint()
+  .presetBrowser({ presetDefaultsOptions: { configNodeModulesIgnores: false } })
+  .configIgnores(['node_modules', 'dist', 'generated', 'tmp', 'test-results'])
+  .presetTypeScript()
+  .presetReact()
+  .addConfig({
     rules: {
       'sonarjs/cognitive-complexity': 'off',
     },
   })
-  .build();
+  .buildConfig();

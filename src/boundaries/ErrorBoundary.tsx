@@ -24,7 +24,7 @@ export class ErrorBoundary extends Component<{
   }) {
     super(props);
 
-    this.state = { error: undefined };
+    this.state = {};
   }
 
   public override shouldComponentUpdate(_nextProps: Readonly<{

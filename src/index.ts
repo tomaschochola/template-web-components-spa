@@ -12,7 +12,7 @@
 
 import './index.scss';
 
-import 'core-js/actual';
+import 'core-js/stable';
 import './bootstrap';
 import './observability';
 
@@ -25,7 +25,7 @@ function onWindowLoad(callback: () => void): void {
 }
 
 function registerServiceWorker(): void {
-  if (process.env['WEBPACK_MODE'] !== 'production' || !('serviceWorker' in navigator)) {
+  if (process.env.WEBPACK_MODE !== 'production' || !('serviceWorker' in navigator)) {
     return;
   }
 

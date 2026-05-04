@@ -17,15 +17,15 @@ import { Webpack } from '@tomaschochola/tooling-webpack';
 // eslint-disable-next-line no-restricted-exports
 export default function (env, argv) {
   return new Webpack(env, argv)
-    .entry({
+    .setEntry({
       og: ['./og/og.ts'],
     })
-    .defaults()
-    .public('./')
-    .output(fileURLToPath(new URL('./tmp/og/', import.meta.url)))
-    .html({
+    .presetDefaults()
+    .setPublicPath('./')
+    .setOutputPath(fileURLToPath(new URL('./tmp/og/', import.meta.url)))
+    .pluginHtml({
       filename: 'og.html',
       template: './og/og.html',
     })
-    .build();
+    .buildConfig();
 }

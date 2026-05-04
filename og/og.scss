@@ -13,9 +13,9 @@
 @use '../src/index';
 
 :root {
-  --ogiconsize: 8rem;
-  --ogfontsize: 11rem;
-  --oggap: 4rem;
+  --icon: 8rem;
+  --font: 11rem;
+  --gap: 4rem;
 }
 
 :root,
@@ -28,16 +28,16 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--oggap);
+  gap: var(--gap);
 }
 
 img {
-  width: var(--ogiconsize);
-  height: var(--ogiconsize);
+  width: var(--icon);
+  height: var(--icon);
 }
 
 h1 {
-  font-size: var(--ogfontsize);
+  font-size: var(--font);
   font-weight: 900;
 }
 

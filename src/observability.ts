@@ -40,11 +40,11 @@ import {
 import { ATTR_DEPLOYMENT_ENVIRONMENT_NAME } from '@opentelemetry/semantic-conventions/incubating';
 import { onCLS, onFCP, onINP, onLCP, onTTFB, type Metric } from 'web-vitals';
 
-const APP_NAME = process.env['APP_NAME'] ?? '';
-const APP_VERSION = process.env['APP_VERSION'] ?? '';
-const APP_ENV = process.env['APP_ENV'] ?? '';
-const WEBPACK_MODE = process.env['WEBPACK_MODE'] ?? '';
-const OTLP_API_KEY = process.env['OTLP_API_KEY'] ?? '';
+const APP_NAME = process.env.APP_NAME;
+const APP_VERSION = process.env.APP_VERSION;
+const APP_ENV = process.env.APP_ENV;
+const WEBPACK_MODE = process.env.WEBPACK_MODE;
+const OTLP_API_KEY = process.env.OTLP_API_KEY;
 
 if (APP_NAME === '') {
   throw new Error('APP_NAME');
@@ -73,12 +73,13 @@ const resource = defaultResource()
   )
   .merge(detectResources({ detectors: [browserDetector] }));
 
-const headers
-  = OTLP_API_KEY !== ''
-    ? {
+const exporterHeaders: { headers?: { Authorization: string } } = OTLP_API_KEY === ''
+  ? {}
+  : {
+      headers: {
         Authorization: `Bearer ${OTLP_API_KEY}`,
-      }
-    : undefined;
+      },
+    };
 
 const tracerProvider = new WebTracerProvider({
   resource: resource,
@@ -86,7 +87,7 @@ const tracerProvider = new WebTracerProvider({
     new BatchSpanProcessor(
       new OTLPTraceExporter({
         url: location.origin + '/otlp/v1/traces',
-        headers: headers,
+        ...exporterHeaders,
       }),
     ),
   ],
@@ -106,7 +107,7 @@ const meterProvider = new MeterProvider({
     new PeriodicExportingMetricReader({
       exporter: new OTLPMetricExporter({
         url: location.origin + '/otlp/v1/metrics',
-        headers: headers,
+        ...exporterHeaders,
       }),
     }),
   ],
@@ -120,7 +121,7 @@ const loggerProvider = new LoggerProvider({
     new BatchLogRecordProcessor(
       new OTLPLogExporter({
         url: location.origin + '/otlp/v1/logs',
-        headers: headers,
+        ...exporterHeaders,
       }),
     ),
   ],

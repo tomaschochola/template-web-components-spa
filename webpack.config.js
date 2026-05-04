@@ -15,22 +15,22 @@ import { Webpack } from '@tomaschochola/tooling-webpack';
 // eslint-disable-next-line no-restricted-exports
 export default function (env, argv) {
   return new Webpack(env, argv)
-    .entry({
+    .setEntry({
       index: ['./src/index.ts'],
     })
-    .defaults({
-      copy: true,
-      pwa: true,
+    .presetDefaults({
+      pluginCopy: true,
+      pluginPwa: true,
     })
-    .environment({
-      OTLP_API_KEY: env.OTLP_API_KEY ?? argv.otlpApiKey ?? process.env.OTLP_API_KEY ?? null,
+    .pluginEnvironment({
+      OTLP_API_KEY: env.OTLP_API_KEY ?? argv.otlpApiKey ?? process.env.OTLP_API_KEY ?? '',
     })
-    .html({
+    .pluginHtml({
       template: './src/index.html',
       filename: 'index.html',
     })
-    .from('./generated')
-    .merge((_env, _argv, conf) => ({
+    .pluginCopyFrom('./generated')
+    .mergeConfig((_env, _argv, conf) => ({
       ...conf,
       ignoreWarnings: [
         ...(conf.ignoreWarnings ?? []),
@@ -40,5 +40,5 @@ export default function (env, argv) {
         },
       ],
     }))
-    .build();
+    .buildConfig();
 }

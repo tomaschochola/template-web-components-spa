@@ -10,24 +10,24 @@
  * @see {@link https://github.com/sponsors/tomaschochola} GitHub Sponsors
  */
 
-declare const process: {
-  env: {
+declare namespace NodeJS {
+  interface ProcessEnv {
     // 'development' | 'production'
-    NODE_ENV: string;
+    readonly NODE_ENV: string;
 
     // 'development' | 'production'
-    WEBPACK_MODE: string;
+    readonly WEBPACK_MODE: string;
 
     // regex: ^\d+\.\d+\.\d+$
-    APP_VERSION: string;
+    readonly APP_VERSION: string;
 
     // regex: ^[a-zA-Z0-9-_]+$
-    APP_NAME: string;
+    readonly APP_NAME: string;
 
     // 'local' | 'playwright' | 'development' | 'sit' | 'uat' | 'production'
-    APP_ENV: string;
+    readonly APP_ENV: string;
 
     // regex: ^[a-zA-Z0-9]+$
-    OTLP_API_KEY: string | null;
-  };
-};
+    readonly OTLP_API_KEY: string;
+  }
+}

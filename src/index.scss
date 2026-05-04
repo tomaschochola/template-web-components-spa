@@ -10,7 +10,7 @@
  * @see {@link https://github.com/sponsors/tomaschochola} GitHub Sponsors
  */
 
-@use '../src/css/sanitize';
-@use '../src/css/base';
-@use '../src/css/typography';
-@use '../src/css/scrollbar';
+@use './css/sanitize';
+@use './css/base';
+@use './css/typography';
+@use './css/scrollbar';

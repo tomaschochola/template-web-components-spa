@@ -44,13 +44,13 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.11.3",
     "@playwright/test": "^1.59.1",
-    "@tomaschochola/tooling-babel": "github:tomaschochola/tooling-babel#1.x",
+    "@tomaschochola/tooling-babel": "file:../tooling-babel",
     "@tomaschochola/tooling-eslint": "github:tomaschochola/tooling-eslint#1.x",
     "@tomaschochola/tooling-postcss": "github:tomaschochola/tooling-postcss#1.x",
     "@tomaschochola/tooling-prettier": "github:tomaschochola/tooling-prettier#1.x",
     "@tomaschochola/tooling-stylelint": "github:tomaschochola/tooling-stylelint#1.x",
-    "@tomaschochola/tooling-typescript": "github:tomaschochola/tooling-typescript#1.x",
-    "@tomaschochola/tooling-webpack": "github:tomaschochola/tooling-webpack#1.x",
+    "@tomaschochola/tooling-typescript": "file:../tooling-typescript",
+    "@tomaschochola/tooling-webpack": "file:../tooling-webpack",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "csstype": "^3.2.3"

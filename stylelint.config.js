@@ -14,6 +14,5 @@ import { Stylelint } from '@tomaschochola/tooling-stylelint';
 
 // eslint-disable-next-line no-restricted-exports
 export default new Stylelint()
-  .standard()
-  .prettier()
-  .build();
+  .presetDefaults()
+  .buildConfig();
