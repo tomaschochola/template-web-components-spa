@@ -12,20 +12,42 @@
 
 import { fileURLToPath } from 'node:url';
 
-import { Webpack } from '@tomaschochola/tooling-webpack';
+import { WebpackConfigBuilder } from '@tomaschochola/tooling-webpack';
 
 // eslint-disable-next-line no-restricted-exports
 export default function (env, argv) {
-  return new Webpack(env, argv)
-    .setEntry({
+  let tooling = new WebpackConfigBuilder({ env, argv });
+
+  tooling = tooling
+    .setEntries({
       og: ['./og/og.ts'],
     })
-    .presetDefaults()
     .setPublicPath('./')
     .setOutputPath(fileURLToPath(new URL('./tmp/og/', import.meta.url)))
-    .pluginHtml({
+    .addBabelLoader()
+    .addStyleLoaders()
+    .addHtmlLoader()
+    .addAssetQueryRules()
+    .addEnvironmentPlugin({
+      WEBPACK_MODE: tooling.webpackMode,
+      WEBPACK_BUILD: tooling.webpackBuild,
+      WEBPACK_SERVE: tooling.webpackServe,
+      WEBPACK_WATCH: tooling.webpackWatch,
+      NODE_ENV: tooling.nodeEnv,
+      APP_ENV: tooling.appEnv,
+      APP_NAME: tooling.appName,
+      APP_VERSION: tooling.appVersion,
+    })
+    .addDefinePlugin()
+    .addHtmlPlugin({
       filename: 'og.html',
       template: './og/og.html',
     })
-    .buildConfig();
+    .addTerserMinimizer()
+    .addCssMinimizer()
+    .addHtmlMinimizer()
+    .addJsonMinimizer()
+    .addImageMinimizer();
+
+  return tooling.toConfig();
 }

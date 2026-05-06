@@ -10,9 +10,10 @@
  * @see {@link https://github.com/sponsors/tomaschochola} GitHub Sponsors
  */
 
-import { Stylelint } from '@tomaschochola/tooling-stylelint';
+import { StylelintConfigBuilder } from '@tomaschochola/tooling-stylelint';
 
 // eslint-disable-next-line no-restricted-exports
-export default new Stylelint()
-  .presetDefaults()
-  .buildConfig();
+export default new StylelintConfigBuilder()
+  .addStandardScssConfig()
+  .addPrettierCompatibility()
+  .toConfig();

@@ -10,17 +10,34 @@
  * @see {@link https://github.com/sponsors/tomaschochola} GitHub Sponsors
  */
 
-import { ESLint } from '@tomaschochola/tooling-eslint';
+import { ESLintConfigBuilder, filePatterns } from '@tomaschochola/tooling-eslint';
+
+const typescriptFiles = [...filePatterns.allTypeScriptFiles, ...filePatterns.allTsxFiles];
+const javascriptFiles = [...filePatterns.allJavaScriptFiles, ...filePatterns.allJsxFiles];
 
 // eslint-disable-next-line no-restricted-exports
-export default new ESLint()
-  .presetBrowser({ presetDefaultsOptions: { configNodeModulesIgnores: false } })
-  .configIgnores(['node_modules', 'dist', 'generated', 'tmp', 'test-results'])
-  .presetTypeScript()
-  .presetReact()
-  .addConfig({
-    rules: {
-      'sonarjs/cognitive-complexity': 'off',
-    },
-  })
-  .buildConfig();
+export default new ESLintConfigBuilder()
+  .addNodeGlobalsForConfigFiles()
+  .addBrowserGlobals()
+  .addGlobalIgnores(filePatterns.defaultIgnorePatterns)
+  .addGlobalIgnores(['node_modules', 'dist', 'generated', 'tmp', 'test-results'])
+  .addJavaScriptRecommendedRules()
+  .addJavaScriptPolicyRules()
+  .addTypeScriptStrictTypeCheckedRules({ files: typescriptFiles })
+  .addTypeScriptStylisticTypeCheckedRules({ files: typescriptFiles })
+  .enableTypeScriptProjectService({ files: typescriptFiles })
+  .addTypeScriptPolicyRules({ files: typescriptFiles })
+  .disableTypeScriptTypeChecking({ files: javascriptFiles })
+  .addReactRecommendedRules()
+  .addReactJsxRuntimeRules()
+  .addReactVersionDetection()
+  .addReactPolicyRules()
+  .addJsxAccessibilityStrictRules()
+  .addJsxAccessibilityPolicyRules()
+  .addReactHooksRecommendedLatestRules()
+  .addStylisticCustomizedRules()
+  .addStylisticPolicyRules()
+  .disableStylisticLegacyRules()
+  .addSonarJsRecommendedRules()
+  .addSonarJsPolicyOverrides()
+  .toConfig();

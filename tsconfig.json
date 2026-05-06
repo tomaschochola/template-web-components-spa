@@ -1,9 +1,4 @@
 {
   "extends": "@tomaschochola/tooling-typescript/src/browser_webpack_babel_react.json",
-  "include": [
-    "./og/**/*",
-    "./src/**/*",
-    "./tests/**/*",
-    "./types/**/*"
-  ]
+  "include": ["./og/**/*", "./src/**/*", "./tests/**/*", "./types/**/*"]
 }

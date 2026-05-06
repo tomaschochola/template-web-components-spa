@@ -10,35 +10,56 @@
  * @see {@link https://github.com/sponsors/tomaschochola} GitHub Sponsors
  */
 
-import { Webpack } from '@tomaschochola/tooling-webpack';
+import { WebpackConfigBuilder } from '@tomaschochola/tooling-webpack';
 
 // eslint-disable-next-line no-restricted-exports
 export default function (env, argv) {
-  return new Webpack(env, argv)
-    .setEntry({
+  let tooling = new WebpackConfigBuilder({ env, argv });
+
+  tooling = tooling
+    .setEntries({
       index: ['./src/index.ts'],
     })
-    .presetDefaults({
-      pluginCopy: true,
-      pluginPwa: true,
-    })
-    .pluginEnvironment({
+    .addBabelLoader()
+    .addStyleLoaders()
+    .addHtmlLoader()
+    .addAssetQueryRules()
+    .addEnvironmentPlugin({
+      WEBPACK_MODE: tooling.webpackMode,
+      WEBPACK_BUILD: tooling.webpackBuild,
+      WEBPACK_SERVE: tooling.webpackServe,
+      WEBPACK_WATCH: tooling.webpackWatch,
+      NODE_ENV: tooling.nodeEnv,
+      APP_ENV: tooling.appEnv,
+      APP_NAME: tooling.appName,
+      APP_VERSION: tooling.appVersion,
       OTLP_API_KEY: env.OTLP_API_KEY ?? argv.otlpApiKey ?? process.env.OTLP_API_KEY ?? '',
     })
-    .pluginHtml({
+    .addDefinePlugin()
+    .addHtmlPlugin({
       template: './src/index.html',
       filename: 'index.html',
     })
-    .pluginCopyFrom('./generated')
-    .mergeConfig((_env, _argv, conf) => ({
-      ...conf,
-      ignoreWarnings: [
-        ...(conf.ignoreWarnings ?? []),
-        {
-          message: /Critical dependency: the request of a dependency is an expression/,
-          module: /node_modules[/\\]@protobufjs[/\\]inquire[/\\]/,
-        },
-      ],
-    }))
-    .buildConfig();
+    .addPublicCopyPlugin()
+    .addCopyFrom('./generated')
+    .addTerserMinimizer()
+    .addCssMinimizer()
+    .addHtmlMinimizer()
+    .addJsonMinimizer()
+    .addImageMinimizer()
+    .addIgnoredWarnings([
+      {
+        message: /Critical dependency: the request of a dependency is an expression/,
+        module: /node_modules[/\\]@protobufjs[/\\]inquire[/\\]/,
+      },
+    ]);
+
+  if (tooling.isProductionMode) {
+    tooling = tooling
+      .addGzipCompressionPlugin()
+      .addBrotliCompressionPlugin()
+      .addWorkboxServiceWorkerPlugin();
+  }
+
+  return tooling.toConfig();
 }
