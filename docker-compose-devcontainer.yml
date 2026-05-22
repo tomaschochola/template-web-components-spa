@@ -1,6 +1,8 @@
 networks:
   devcontainer:
     internal: false
+volumes:
+  npm-cache:
 services:
   devcontainer:
     build:
@@ -11,11 +13,13 @@ services:
     environment:
       APP_ENV: 'local'
       APP_VERSION: 'dev'
+      NPM_CONFIG_CACHE: '/home/node/.npm'
       NODE_ENV: 'development'
     networks:
       - 'devcontainer'
     ports:
       - '3000:3000'
-    user: 'node'
+    user: 'node:node'
     volumes:
       - './:/workspaces'
+      - 'npm-cache:/home/node/.npm'

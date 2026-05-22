@@ -67,3 +67,5 @@ declare module '*&as=png' {
 }
 
 declare module '*.scss';
+
+declare module '*.css';

@@ -10,4 +10,5 @@
  * @see {@link https://github.com/sponsors/tomaschochola} GitHub Sponsors
  */
 
+import '@fontsource-variable/google-sans-flex/standard.css';
 import './og.scss';

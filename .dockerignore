@@ -9,4 +9,5 @@
 !/public
 !/src
 !/tsconfig.json
+!/types
 !/webpack.config.js

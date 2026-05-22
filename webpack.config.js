@@ -14,7 +14,10 @@ import { WebpackConfigBuilder } from '@tomaschochola/tooling-webpack';
 
 // eslint-disable-next-line no-restricted-exports
 export default function (env, argv) {
-  let tooling = new WebpackConfigBuilder({ env, argv });
+  let tooling = new WebpackConfigBuilder({
+    env,
+    argv,
+  });
 
   tooling = tooling
     .setEntries({

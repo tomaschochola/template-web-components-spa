@@ -38,7 +38,7 @@ services:
       nofile:
         hard: 1048576
         soft: 1048576
-    user: 'nginx'
+    user: 'nginx:nginx'
     volumes:
       - target: '/tmp'
         tmpfs:
