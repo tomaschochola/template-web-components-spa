@@ -1,8 +1,8 @@
 # syntax=docker/dockerfile:1
 
-FROM node:24-trixie AS versionednode
+FROM docker.io/library/node:24-trixie AS versionednode
 FROM mcr.microsoft.com/devcontainers/typescript-node:24-trixie AS versioneddevcontainer
-FROM nginxinc/nginx-unprivileged:1-trixie AS versionednginx
+FROM docker.io/nginxinc/nginx-unprivileged:1-trixie AS versionednginx
 
 FROM versionednode AS base
 WORKDIR /workspaces
@@ -58,6 +58,7 @@ RUN <<EOF
   apt-get upgrade -y --no-install-recommends
   apt-get install -y --no-install-recommends ca-certificates curl wget build-essential git zip unzip icoutils
   npm install -g svgo@latest sharp-cli@latest
+  install -d -o node -g node /home/node/.npm
   wget https://github.com/linebender/resvg/releases/latest/download/resvg-linux-x86_64.tar.gz -O /tmp/resvg.tar.gz
   tar -xf /tmp/resvg.tar.gz -C /usr/local/bin resvg
   rm /tmp/resvg.tar.gz

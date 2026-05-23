@@ -1,8 +1,6 @@
 networks:
   devcontainer:
     internal: false
-volumes:
-  npm-cache:
 services:
   devcontainer:
     build:
@@ -13,8 +11,9 @@ services:
     environment:
       APP_ENV: 'local'
       APP_VERSION: 'dev'
-      NPM_CONFIG_CACHE: '/home/node/.npm'
       NODE_ENV: 'development'
+      NPM_CONFIG_CACHE: '/home/node/.npm'
+    init: true
     networks:
       - 'devcontainer'
     ports:
@@ -23,3 +22,7 @@ services:
     volumes:
       - './:/workspaces'
       - 'npm-cache:/home/node/.npm'
+volumes:
+  npm-cache:
+    external: true
+    name: 'tomaschochola-npm-cache'
