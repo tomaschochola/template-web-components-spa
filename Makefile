@@ -74,8 +74,9 @@ stylelint_check: ./node_modules ./stylelint.config.js
 	npm exec --ignore-scripts -- stylelint ./**/*.{sass,scss,css}
 
 .PHONY: typescript_check
-typescript_check: ./node_modules ./tsconfig.json
-	npm exec --ignore-scripts -- tsc --noEmit
+typescript_check: ./node_modules ./tsconfig.json ./tsconfig.playwright.json
+	npm exec --ignore-scripts -- tsc --noEmit --project ./tsconfig.json
+	npm exec --ignore-scripts -- tsc --noEmit --project ./tsconfig.playwright.json
 
 .PHONY: playwright_test
 playwright_test: ./node_modules ./playwright.config.js generated
