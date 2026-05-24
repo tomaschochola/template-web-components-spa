@@ -11,20 +11,23 @@
  */
 
 :root,
-body,
-#root {
-  min-height: 100%;
+body {
+  min-block-size: 100%;
 }
 
 :root {
   color-scheme: only light;
+
+  --tch-color-background: #fdf7ff;
+  --tch-color-text: #352f43;
+  --tch-scrollbar-color: #7e778e;
+  --tch-scrollbar-track-color: transparent;
 }
 
 :root,
 body {
-  background-color: #fdf7ff;
-  color: #352f43;
-  scrollbar-color: #7e778e transparent;
+  background-color: var(--tch-color-background);
+  color: var(--tch-color-text);
 }
 
 body {

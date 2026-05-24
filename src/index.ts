@@ -14,7 +14,6 @@ import '@fontsource-variable/google-sans-flex/standard.css';
 import './index.scss';
 
 import 'core-js/stable';
-import './bootstrap';
 import './observability';
 
 function onWindowLoad(callback: () => void): void {

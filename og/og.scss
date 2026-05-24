@@ -10,41 +10,57 @@
  * @see {@link https://github.com/sponsors/tomaschochola} GitHub Sponsors
  */
 
-@use '../src/index';
-
 :root {
-  --icon: 8rem;
-  --font: 11rem;
-  --gap: 4rem;
+  color-scheme: only light;
+
+  --og-background-color: #141218;
+  --og-color: #fffbff;
+  --og-font-family: 'Google Sans Flex Variable', 'Google Sans Flex', 'Roboto', 'Noto Sans', system-ui, sans-serif;
+  --og-icon-size: 8rem;
+  --og-font-size: 11rem;
+  --og-gap: 4rem;
 }
 
 :root,
 body {
-  background-color: #141218;
-  color: #fffbff;
+  block-size: 100%;
+  min-block-size: 100%;
+  background-color: var(--og-background-color);
+  color: var(--og-color);
+}
+
+body {
+  margin: 0;
+  font-family: var(--og-font-family);
+  font-size: 1rem;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-style: normal;
+  font-optical-sizing: auto;
+  line-height: normal;
+  letter-spacing: normal;
+  text-decoration: none;
+  text-size-adjust: 100%;
+  text-transform: none;
 }
 
 main {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--gap);
+  block-size: 100%;
+  gap: var(--og-gap);
 }
 
 img {
-  width: var(--icon);
-  height: var(--icon);
+  inline-size: var(--og-icon-size);
+  block-size: var(--og-icon-size);
 }
 
 h1 {
-  font-size: var(--font);
+  margin: 0;
+  font-size: var(--og-font-size);
   font-weight: 900;
-}
-
-img,
-h2 {
-  vertical-align: middle;
   line-height: 1;
   white-space: nowrap;
-  margin: 0;
 }

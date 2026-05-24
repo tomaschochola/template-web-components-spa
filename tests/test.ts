@@ -28,5 +28,4 @@ export async function loadPage(page: Page, url: string): Promise<void> {
   await waitForIdle(page);
   await expect(page).toHaveURL(url);
   await expect(page.locator('#webpack-dev-server-client-overlay')).not.toBeAttached();
-  await expect(page.getByTestId('sentinel')).toBeAttached();
 }

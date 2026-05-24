@@ -10,7 +10,7 @@
  * @see {@link https://github.com/sponsors/tomaschochola} GitHub Sponsors
  */
 
-import config from '@tomaschochola/tooling-babel/templates/typescript_react.js';
+import config from '@tomaschochola/tooling-babel/templates/typescript.js';
 
 // eslint-disable-next-line no-restricted-exports
 export default config;

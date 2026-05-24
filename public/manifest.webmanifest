@@ -1,7 +1,7 @@
 {
   "background_color": "#fdf7ff",
   "categories": ["developer", "productivity", "utilities"],
-  "description": "tomaschochola/template-react-spa",
+  "description": "tomaschochola/template-web-components-spa",
   "dir": "ltr",
   "display": "standalone",
   "icons": [
@@ -44,11 +44,11 @@
   ],
   "id": "/",
   "lang": "en",
-  "name": "tomaschochola/template-react-spa",
+  "name": "tomaschochola/template-web-components-spa",
   "orientation": "any",
   "prefer_related_applications": false,
   "scope": "/",
-  "short_name": "tomaschochola/template-react-spa",
+  "short_name": "tomaschochola/template-web-components-spa",
   "start_url": "/",
   "theme_color": "#fdf7ff"
 }

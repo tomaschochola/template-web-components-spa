@@ -11,13 +11,12 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { en } from '../src/lang/en';
 import { assertAxe, loadPage } from './test';
 
 test('/', async ({ page }) => {
   await loadPage(page, '/');
 
-  await expect(page).toHaveTitle(en['routes.index.seo.title']);
+  await expect(page).toHaveTitle('tomaschochola/template-web-components-spa');
 
   await assertAxe(page);
 });
