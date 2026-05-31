@@ -55,7 +55,7 @@ prettier_fix: ./node_modules ./prettier.config.js
 
 .PHONY: stylelint_fix
 stylelint_fix: ./node_modules ./stylelint.config.js
-	npm exec --ignore-scripts -- stylelint --fix ./**/*.{sass,scss,css}
+	npm exec --ignore-scripts -- stylelint --allow-empty-input --fix ./**/*.{sass,scss,css}
 
 .PHONY: yq_fix
 yq_fix:
@@ -71,7 +71,7 @@ prettier_check: ./node_modules ./prettier.config.js
 
 .PHONY: stylelint_check
 stylelint_check: ./node_modules ./stylelint.config.js
-	npm exec --ignore-scripts -- stylelint ./**/*.{sass,scss,css}
+	npm exec --ignore-scripts -- stylelint --allow-empty-input ./**/*.{sass,scss,css}
 
 .PHONY: typescript_check
 typescript_check: ./node_modules ./tsconfig.json ./tsconfig.playwright.json
@@ -138,6 +138,10 @@ up:
 .PHONY: stop
 stop:
 	docker compose -f ./docker-compose.yml -f ./docker-compose-swarm.yml stop
+
+.PHONY: port
+port:
+	@set -o pipefail; project="$$(docker ps --filter 'label=devcontainer.local_folder=$(CURDIR)' --filter 'label=devcontainer.config_file=$(CURDIR)/.devcontainer/devcontainer.json' --format '{{.Label "com.docker.compose.project"}}' | head -n1)"; docker ps -q --filter "label=com.docker.compose.project=$$project" --filter 'label=com.docker.compose.service=devcontainer' | head -n1 | xargs -r -I{} docker port {} 3000/tcp | awk -F: 'NR==1 { print "http://127.0.0.1:" $$NF; ok=1 } END { exit !ok }'
 
 .PHONY: devcontainer
 devcontainer: precreate
