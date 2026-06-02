@@ -139,9 +139,17 @@ up:
 stop:
 	docker compose -f ./docker-compose.yml -f ./docker-compose-swarm.yml stop
 
-.PHONY: port
-port:
-	@set -o pipefail; project="$$(docker ps --filter 'label=devcontainer.local_folder=$(CURDIR)' --filter 'label=devcontainer.config_file=$(CURDIR)/.devcontainer/devcontainer.json' --format '{{.Label "com.docker.compose.project"}}' | head -n1)"; docker ps -q --filter "label=com.docker.compose.project=$$project" --filter 'label=com.docker.compose.service=devcontainer' | head -n1 | xargs -r -I{} docker port {} 3000/tcp | awk -F: 'NR==1 { print "http://127.0.0.1:" $$NF; ok=1 } END { exit !ok }'
+.PHONY: port ports
+port ports:
+	@printf '\033[1m%-80s\033[0m\n' 'template-web-components-spa ports'
+	@printf '%-80s\n' '--------------------------------------------------------------------------------'
+	@printf '\033[1m%-12s %-21s %-12s %-20s\033[0m\n' 'Kind' 'Host' 'Container' 'Service'
+	@printf '%-12s %-21s %-12s %-20s\n' 'nginx' '127.0.0.1:61100' '61100' 'nginx'
+	@printf '%-12s %-21s %-12s %-20s\n' 'webpack' '127.0.0.1:61101' '61101' 'devcontainer'
+	@printf '%-80s\n' '--------------------------------------------------------------------------------'
+	@printf '\n\033[1mLinks\033[0m\n'
+	@printf '%s\n' 'Webpack dev server: http://127.0.0.1:61101/'
+	@printf '%s\n' 'Nginx server:       http://127.0.0.1:61100/'
 
 .PHONY: devcontainer
 devcontainer: precreate

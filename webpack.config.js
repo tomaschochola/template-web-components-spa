@@ -23,6 +23,7 @@ export default function (env, argv) {
     .setEntries({
       index: ['./src/index.ts'],
     })
+    .setDevServerPort(61101)
     .addBabelLoader()
     .addStyleLoaders()
     .addHtmlLoader()
