@@ -22,7 +22,7 @@ USER node
 
 FROM base AS development_deps
 COPY --chown=node:node ./.npmrc ./package* ./
-RUN npm install --ignore-scripts --install-links --include=prod --include=dev --include=peer --include=optional
+RUN npm ci --ignore-scripts --install-links --include=prod --include=dev --include=peer --include=optional
 
 FROM development_deps AS build
 USER root

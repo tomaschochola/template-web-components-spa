@@ -14,13 +14,8 @@ MAKEFLAGS += --no-builtin-variables
 .SUFFIXES:
 .NOTPARALLEL:
 
-# Options
-
-export APP_ENV ?= production
-export NODE_ENV ?= production
-export OTEL_ENABLED ?= false
-export OTLP_API_KEY ?=
-export POLYFILLS_ENABLED ?= false
+DEVCONTAINER_PROJECT := template-web-components-spa-devcontainer
+DEVCONTAINER_FILTER := label=com.docker.compose.project=$(DEVCONTAINER_PROJECT)
 
 # Default goal
 
@@ -31,6 +26,14 @@ export POLYFILLS_ENABLED ?= false
 never:
 	printf '%s\n' 'No default target. Run an explicit target' >&2
 	exit 1
+
+# Options
+
+export APP_ENV ?= production
+export NODE_ENV ?= production
+export OTEL_ENABLED ?= false
+export OTLP_API_KEY ?=
+export POLYFILLS_ENABLED ?= false
 
 # Goals
 
@@ -60,15 +63,21 @@ deps_update: npm_update
 
 .PHONY: clean
 clean:
-	rm -rf ./node_modules
 	rm -rf ./dist
 	rm -rf ./release
 	rm -rf ./generated
 	rm -rf ./test-results
+	rm -rf ./tmp
+
+.PHONY: deps_clean
+deps_clean:
+	rm -rf ./node_modules
 
 .PHONY: distclean
-distclean: clean
-	rm -rf ./package-lock.json
+distclean: clean deps_clean
+
+.PHONY: nuke
+nuke: distclean data_reset
 
 .PHONY: eslint_fix
 eslint_fix: ./node_modules ./package.json ./package-lock.json ./eslint.config.js
@@ -113,12 +122,11 @@ npm_audit: ./node_modules ./package.json ./package-lock.json
 
 .PHONY: npm_install
 npm_install: ./package.json ./package-lock.json
-	npm install --ignore-scripts --install-links --include=prod --include=dev --include=peer --include=optional
+	npm ci --ignore-scripts --install-links --include=prod --include=dev --include=peer --include=optional
 
 .PHONY: npm_update
 npm_update: ./package.json
 	rm -rf ./node_modules
-	rm -rf ./package-lock.json
 	npm update --ignore-scripts --install-links --include=prod --include=dev --include=peer --include=optional
 
 .PHONY: precreate
@@ -209,10 +217,40 @@ local_swarm_remove development_swarm_remove sit_swarm_remove uat_swarm_remove pr
 	docker stack rm "$${CI_PROJECT_PATH_SLUG:-template-web-components-spa}-$${APP_ENV}"
 
 .PHONY: devcontainer
-devcontainer: precreate
+devcontainer:
 	devcontainer up --workspace-folder .
-	devcontainer exec --workspace-folder . /bin/bash || true
-	docker ps -q --filter "label=devcontainer.local_folder=$${PWD}" | xargs -r docker stop
+	devcontainer exec --workspace-folder . /bin/bash
+
+.PHONY: status
+status:
+	docker container ls --all --filter "$(DEVCONTAINER_FILTER)"
+	docker volume ls --filter "$(DEVCONTAINER_FILTER)"
+	docker network ls --filter "$(DEVCONTAINER_FILTER)"
+
+.PHONY: stop
+stop:
+	docker container ls --quiet --filter "$(DEVCONTAINER_FILTER)" | while IFS= read -r container; do docker container stop "$$container"; done
+
+.PHONY: restart
+restart:
+	docker container ls --all --quiet --filter "$(DEVCONTAINER_FILTER)" | while IFS= read -r container; do docker container restart "$$container"; done
+
+.PHONY: down
+down: stop
+	docker container ls --all --quiet --filter "$(DEVCONTAINER_FILTER)" | while IFS= read -r container; do docker container rm --force --volumes "$$container"; done
+	docker network ls --quiet --filter "$(DEVCONTAINER_FILTER)" | while IFS= read -r network; do docker network rm "$$network"; done
+
+.PHONY: rebuild
+rebuild: down
+	devcontainer up --workspace-folder .
+
+.PHONY: rebuild_no_cache
+rebuild_no_cache: down
+	devcontainer up --workspace-folder . --build-no-cache
+
+.PHONY: data_reset
+data_reset: down
+	docker volume ls --quiet --filter "$(DEVCONTAINER_FILTER)" | while IFS= read -r volume; do docker volume rm "$$volume"; done
 
 .PHONY: build
 build: ./node_modules ./package.json ./package-lock.json generated
@@ -243,5 +281,5 @@ playwright_ui: ./node_modules ./package.json ./package-lock.json ./playwright.co
 
 # Dependencies
 
-./package-lock.json ./node_modules &: ./package.json
-	${MAKE} npm_update
+./node_modules: ./package.json ./package-lock.json
+	${MAKE} npm_install
