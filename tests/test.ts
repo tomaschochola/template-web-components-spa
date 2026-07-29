@@ -10,29 +10,10 @@
  * @see {@link https://github.com/sponsors/tomaschochola} GitHub Sponsors
  */
 
-import AxeBuilder from '@axe-core/playwright';
 import { expect, type Page } from '@playwright/test';
+import { assertAxe, waitForIdle } from '@tomaschochola/tooling-playwright';
 
-type AxeResults = Awaited<ReturnType<AxeBuilder['analyze']>>;
-
-export async function waitForIdle(page: Page): Promise<void> {
-  await page.waitForLoadState('load');
-  await page.waitForLoadState('domcontentloaded');
-  await page.waitForLoadState('networkidle');
-  await page.evaluate(async () => {
-    await document.fonts.ready;
-  });
-}
-
-export async function assertAxe(page: Page): Promise<AxeResults> {
-  const results = await new AxeBuilder({ page })
-    .withTags(['wcag2a', 'wcag2aa', 'wcag2aaa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice', 'ACT', 'EN-301-549'])
-    .analyze();
-
-  expect(results.violations).toEqual([]);
-
-  return results;
-}
+export { assertAxe, waitForIdle };
 
 export async function loadPage(page: Page, url: string): Promise<void> {
   await page.goto(url);
