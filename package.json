@@ -16,29 +16,30 @@
     }
   ],
   "dependencies": {
-    "@fontsource-variable/atkinson-hyperlegible-next": "^5.2.6",
+    "@fontsource-variable/atkinson-hyperlegible-next": "^5.3.0",
     "@opentelemetry/api": "^1.9.1",
-    "@opentelemetry/api-logs": "^0.216.0",
-    "@opentelemetry/auto-instrumentations-web": "^0.61.0",
-    "@opentelemetry/context-zone": "^2.7.1",
-    "@opentelemetry/core": "^2.7.1",
-    "@opentelemetry/exporter-logs-otlp-http": "^0.216.0",
-    "@opentelemetry/exporter-metrics-otlp-http": "^0.216.0",
-    "@opentelemetry/exporter-trace-otlp-http": "^0.216.0",
-    "@opentelemetry/instrumentation": "^0.216.0",
-    "@opentelemetry/opentelemetry-browser-detector": "^0.216.0",
-    "@opentelemetry/resources": "^2.7.1",
-    "@opentelemetry/sdk-logs": "^0.216.0",
-    "@opentelemetry/sdk-metrics": "^2.7.1",
-    "@opentelemetry/sdk-trace-base": "^2.7.1",
-    "@opentelemetry/sdk-trace-web": "^2.7.1",
-    "@opentelemetry/semantic-conventions": "^1.40.0",
-    "web-vitals": "^5.2.0"
+    "@opentelemetry/api-logs": "^0.221.0",
+    "@opentelemetry/auto-instrumentations-web": "^0.66.0",
+    "@opentelemetry/context-zone": "^2.10.0",
+    "@opentelemetry/core": "^2.10.0",
+    "@opentelemetry/exporter-logs-otlp-http": "^0.221.0",
+    "@opentelemetry/exporter-metrics-otlp-http": "^0.221.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.221.0",
+    "@opentelemetry/instrumentation": "^0.221.0",
+    "@opentelemetry/opentelemetry-browser-detector": "^0.221.0",
+    "@opentelemetry/resources": "^2.10.0",
+    "@opentelemetry/sdk-logs": "^0.221.0",
+    "@opentelemetry/sdk-metrics": "^2.10.0",
+    "@opentelemetry/sdk-trace-base": "^2.10.0",
+    "@opentelemetry/sdk-trace-web": "^2.10.0",
+    "@opentelemetry/semantic-conventions": "^1.43.0",
+    "core-js": "^3.49.0",
+    "web-vitals": "^6.0.1"
   },
   "description": "@tomaschochola/template-web-components-spa",
   "devDependencies": {
-    "@axe-core/playwright": "^4.11.3",
-    "@playwright/test": "^1.59.1",
+    "@axe-core/playwright": "^4.12.1",
+    "@playwright/test": "^1.62.0",
     "@tomaschochola/tooling-babel": "github:tomaschochola/tooling-babel#1.x",
     "@tomaschochola/tooling-eslint": "github:tomaschochola/tooling-eslint#1.x",
     "@tomaschochola/tooling-postcss": "github:tomaschochola/tooling-postcss#1.x",
@@ -46,6 +47,10 @@
     "@tomaschochola/tooling-stylelint": "github:tomaschochola/tooling-stylelint#1.x",
     "@tomaschochola/tooling-typescript": "github:tomaschochola/tooling-typescript#1.x",
     "@tomaschochola/tooling-webpack": "github:tomaschochola/tooling-webpack#1.x"
+  },
+  "engines": {
+    "node": ">=24.11.0 <25.0.0",
+    "npm": ">=11.0.0 <12.0.0"
   },
   "funding": {
     "type": "github",
@@ -61,7 +66,10 @@
   ],
   "license": "CC-BY-ND-4.0",
   "name": "@tomaschochola/template-web-components-spa",
+  "packageManager": "npm@11.16.0",
+  "private": true,
   "repository": "github:tomaschochola/template-web-components-spa",
   "sideEffects": true,
-  "type": "module"
+  "type": "module",
+  "version": "0.0.0"
 }

@@ -12,22 +12,10 @@
 
 declare namespace NodeJS {
   interface ProcessEnv {
-    // 'development' | 'production'
-    readonly NODE_ENV: string;
-
-    // 'development' | 'production'
-    readonly WEBPACK_MODE: string;
-
-    // regex: ^\d+\.\d+\.\d+$
-    readonly APP_VERSION: string;
-
-    // regex: ^[a-zA-Z0-9-_]+$
-    readonly APP_NAME: string;
-
-    // 'local' | 'playwright' | 'development' | 'sit' | 'uat' | 'production'
     readonly APP_ENV: string;
-
-    // regex: ^[a-zA-Z0-9]+$
+    readonly APP_NAME: string;
+    readonly APP_VERSION: string;
+    readonly NODE_ENV: 'development' | 'production';
     readonly OTLP_API_KEY: string;
   }
 }

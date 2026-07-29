@@ -4,6 +4,13 @@ networks:
 services:
   nginx:
     build:
+      args:
+        APP_ENV: '${APP_ENV:-production}'
+        APP_VERSION: '${APP_VERSION:-}'
+        NODE_ENV: '${NODE_ENV:-production}'
+        OTEL_ENABLED: '${OTEL_ENABLED:-false}'
+        OTLP_API_KEY: '${OTLP_API_KEY:-}'
+        POLYFILLS_ENABLED: '${POLYFILLS_ENABLED:-false}'
       context: './'
       dockerfile: './Dockerfile'
       target: 'nginx'
@@ -17,6 +24,7 @@ services:
         - 'CMD-SHELL'
         - 'curl -fsSL http://localhost:61100/nginx_ping | grep -q pong || exit 1'
       timeout: '5s'
+    image: '${CI_REGISTRY_IMAGE:-oci.localhost}/nginx:${APP_ENV:-production}-${CI_COMMIT_REF_SLUG:-local}-${CI_COMMIT_SHA:-dev}'
     logging:
       driver: 'json-file'
       options:

@@ -10,5 +10,4 @@
  * @see {@link https://github.com/sponsors/tomaschochola} GitHub Sponsors
  */
 
-import '@fontsource-variable/atkinson-hyperlegible-next';
-import './og.scss';
+import 'core-js/stable';

@@ -13,6 +13,7 @@
 import { metrics, trace, ValueType, type Gauge, type Histogram } from '@opentelemetry/api';
 import { logs, SeverityNumber } from '@opentelemetry/api-logs';
 import { getWebAutoInstrumentations } from '@opentelemetry/auto-instrumentations-web';
+import { ZoneContextManager } from '@opentelemetry/context-zone';
 import { CompositePropagator, W3CBaggagePropagator, W3CTraceContextPropagator } from '@opentelemetry/core';
 import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-http';
 import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-http';
@@ -43,23 +44,18 @@ import { onCLS, onFCP, onINP, onLCP, onTTFB, type Metric } from 'web-vitals';
 const APP_NAME = process.env.APP_NAME;
 const APP_VERSION = process.env.APP_VERSION;
 const APP_ENV = process.env.APP_ENV;
-const WEBPACK_MODE = process.env.WEBPACK_MODE;
 const OTLP_API_KEY = process.env.OTLP_API_KEY;
 
 if (APP_NAME === '') {
-  throw new Error('APP_NAME');
+  throw new Error('APP_NAME must not be empty when observability is enabled.');
 }
 
 if (APP_VERSION === '') {
-  throw new Error('APP_VERSION');
+  throw new Error('APP_VERSION must not be empty when observability is enabled.');
 }
 
 if (APP_ENV === '') {
-  throw new Error('APP_ENV');
-}
-
-if (WEBPACK_MODE === '') {
-  throw new Error('WEBPACK_MODE');
+  throw new Error('APP_ENV must not be empty when observability is enabled.');
 }
 
 const resource = defaultResource()
@@ -94,6 +90,7 @@ const tracerProvider = new WebTracerProvider({
 });
 
 tracerProvider.register({
+  contextManager: new ZoneContextManager(),
   propagator: new CompositePropagator({
     propagators: [new W3CTraceContextPropagator(), new W3CBaggagePropagator()],
   }),
@@ -118,12 +115,12 @@ metrics.setGlobalMeterProvider(meterProvider);
 const loggerProvider = new LoggerProvider({
   resource: resource,
   processors: [
-    new BatchLogRecordProcessor(
-      new OTLPLogExporter({
+    new BatchLogRecordProcessor({
+      exporter: new OTLPLogExporter({
         url: location.origin + '/otlp/v1/logs',
         ...exporterHeaders,
       }),
-    ),
+    }),
   ],
 });
 

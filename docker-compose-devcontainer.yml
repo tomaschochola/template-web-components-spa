@@ -1,3 +1,4 @@
+name: 'template-web-components-spa-devcontainer'
 networks:
   devcontainer:
     internal: false
@@ -9,9 +10,6 @@ services:
       target: 'devcontainer'
     command: 'sleep infinity'
     environment:
-      APP_ENV: 'local'
-      APP_VERSION: 'dev'
-      NODE_ENV: 'development'
       NPM_CONFIG_CACHE: '/home/node/.npm'
     init: true
     networks:
@@ -25,18 +23,6 @@ services:
     volumes:
       - './:/workspaces'
       - 'npm-cache:/home/node/.npm'
-  nginx:
-    build:
-      context: './'
-      dockerfile: './Dockerfile'
-      target: 'nginx'
-    networks:
-      - 'devcontainer'
-    ports:
-      - host_ip: '127.0.0.1'
-        published: 61100
-        protocol: 'tcp'
-        target: 61100
 volumes:
   npm-cache:
     external: true

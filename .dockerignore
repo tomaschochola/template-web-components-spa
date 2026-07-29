@@ -1,5 +1,8 @@
 *
 !/.browserslistrc
+!/.npmrc
+!/Makefile
+!/artifacts
 !/assets
 !/babel.config.js
 !/ops
