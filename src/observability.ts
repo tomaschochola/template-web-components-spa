@@ -44,7 +44,6 @@ import { onCLS, onFCP, onINP, onLCP, onTTFB, type Metric } from 'web-vitals';
 const APP_NAME = process.env.APP_NAME;
 const APP_VERSION = process.env.APP_VERSION;
 const APP_ENV = process.env.APP_ENV;
-const OTLP_API_KEY = process.env.OTLP_API_KEY;
 
 if (APP_NAME === '') {
   throw new Error('APP_NAME must not be empty when observability is enabled.');
@@ -69,21 +68,12 @@ const resource = defaultResource()
   )
   .merge(detectResources({ detectors: [browserDetector] }));
 
-const exporterHeaders: { headers?: { Authorization: string } } = OTLP_API_KEY === ''
-  ? {}
-  : {
-      headers: {
-        Authorization: `Bearer ${OTLP_API_KEY}`,
-      },
-    };
-
 const tracerProvider = new WebTracerProvider({
   resource: resource,
   spanProcessors: [
     new BatchSpanProcessor(
       new OTLPTraceExporter({
         url: location.origin + '/otlp/v1/traces',
-        ...exporterHeaders,
       }),
     ),
   ],
@@ -104,7 +94,6 @@ const meterProvider = new MeterProvider({
     new PeriodicExportingMetricReader({
       exporter: new OTLPMetricExporter({
         url: location.origin + '/otlp/v1/metrics',
-        ...exporterHeaders,
       }),
     }),
   ],
@@ -118,7 +107,6 @@ const loggerProvider = new LoggerProvider({
     new BatchLogRecordProcessor({
       exporter: new OTLPLogExporter({
         url: location.origin + '/otlp/v1/logs',
-        ...exporterHeaders,
       }),
     }),
   ],

@@ -16,6 +16,6 @@ declare namespace NodeJS {
     readonly APP_NAME: string;
     readonly APP_VERSION: string;
     readonly NODE_ENV: 'development' | 'production';
-    readonly OTLP_API_KEY: string;
+    readonly WEBPACK_MODE: 'development' | 'none' | 'production';
   }
 }

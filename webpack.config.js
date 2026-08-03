@@ -10,11 +10,8 @@
  * @see {@link https://github.com/sponsors/tomaschochola} GitHub Sponsors
  */
 
+import { resolve } from 'node:path';
 import { WebpackConfigBuilder } from '@tomaschochola/tooling-webpack';
-
-function isEnabled(value) {
-  return value === true || value === 'true';
-}
 
 export default function (env = {}, argv = {}) {
   let tooling = new WebpackConfigBuilder({
@@ -25,29 +22,16 @@ export default function (env = {}, argv = {}) {
   const appEnv = tooling.appEnv;
   const appName = tooling.appName;
   const appVersion = tooling.appVersion;
-  const otelEnabled = isEnabled(env.OTEL_ENABLED ?? process.env.OTEL_ENABLED);
-  const otlpApiKey = env.OTLP_API_KEY ?? process.env.OTLP_API_KEY ?? '';
-  const polyfillsEnabled = isEnabled(env.POLYFILLS_ENABLED ?? process.env.POLYFILLS_ENABLED);
-  const entries = [];
-
-  if (polyfillsEnabled) {
-    entries.push('./src/polyfills.ts');
-  }
-
-  if (otelEnabled) {
-    entries.push('./src/observability.ts');
-  }
-
-  entries.push('./src/index.ts');
+  const webpackMode = tooling.webpackMode;
 
   const isProductionApp = tooling.isProductionMode && appEnv === 'production';
 
   tooling = tooling
+    .setOutputPath(resolve('dist'))
     .setEntries({
-      index: entries,
+      index: ['./src/polyfills.ts', './src/observability.ts', './src/index.ts'],
     })
     .setDevServerPort(61101)
-    .setDevServerServer(appEnv === 'local' ? 'https' : 'http')
     .addBabelLoader()
     .addStyleLoaders()
     .addHtmlLoader()
@@ -56,7 +40,7 @@ export default function (env = {}, argv = {}) {
       'process.env.APP_ENV': JSON.stringify(appEnv),
       'process.env.APP_NAME': JSON.stringify(appName),
       'process.env.APP_VERSION': JSON.stringify(appVersion),
-      'process.env.OTLP_API_KEY': JSON.stringify(otlpApiKey),
+      'process.env.WEBPACK_MODE': JSON.stringify(webpackMode),
     })
     .addHtmlPlugin({
       template: './src/index.html',

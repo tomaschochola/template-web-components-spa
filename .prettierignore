@@ -17,8 +17,6 @@
 # generated artifacts
 /dist
 /generated
-/release
-/tmp
 
 # playwright
 /test-results

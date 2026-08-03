@@ -1,7 +1,0 @@
-services:
-  nginx:
-    ports:
-      - host_ip: '127.0.0.1'
-        published: 61100
-        protocol: 'tcp'
-        target: 61100

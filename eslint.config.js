@@ -15,12 +15,11 @@ import { ESLintConfigBuilder, filePatterns } from '@tomaschochola/tooling-eslint
 const typescriptFiles = filePatterns.allTypeScriptFiles;
 const javascriptFiles = filePatterns.allJavaScriptFiles;
 
- 
 export default new ESLintConfigBuilder()
   .addNodeGlobalsForConfigFiles()
   .addBrowserGlobals()
   .addGlobalIgnores(filePatterns.defaultIgnorePatterns)
-  .addGlobalIgnores(['node_modules', 'dist', 'generated', 'release', 'tmp', 'test-results'])
+  .addGlobalIgnores(['node_modules', 'dist', 'generated', 'test-results'])
   .addJavaScriptRecommendedRules()
   .addTypeScriptStrictTypeCheckedRules({ files: typescriptFiles })
   .enableTypeScriptProjectService({ files: typescriptFiles })
