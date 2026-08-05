@@ -17,13 +17,16 @@ import {
   defineBrowserArtifactPrintPage,
   defineBrowserArtifactSocialCard,
   defineBrowserArtifacts,
-} from '@tomaschochola/tooling-browser-artifacts';
+} from '@tomaschochola/tooling-browser-artifacts/browser';
 
 defineBrowserArtifactPrintPage(customElements);
 defineBrowserArtifactSocialCard(customElements);
 
 defineBrowserArtifacts(({ pdf, png }) => {
-  png('open-graph.png', { height: 630, width: 1200 }, (root) => {
+  png('open-graph.png', {
+    height: 630,
+    width: 1200,
+  }, (root) => {
     const card = root.ownerDocument.createElement(BROWSER_ARTIFACT_SOCIAL_CARD_TAG_NAME);
 
     card.imageSource = image;
@@ -31,7 +34,10 @@ defineBrowserArtifacts(({ pdf, png }) => {
     root.replaceChildren(card);
   });
 
-  png('facebook-page-cover.png', { height: 315, width: 851 }, (root) => {
+  png('facebook-page-cover.png', {
+    height: 315,
+    width: 851,
+  }, (root) => {
     const card = root.ownerDocument.createElement(BROWSER_ARTIFACT_SOCIAL_CARD_TAG_NAME);
 
     card.imageSource = image;
@@ -39,7 +45,10 @@ defineBrowserArtifacts(({ pdf, png }) => {
     root.replaceChildren(card);
   });
 
-  png('facebook-group-cover.png', { height: 856, width: 1640 }, (root) => {
+  png('facebook-group-cover.png', {
+    height: 856,
+    width: 1640,
+  }, (root) => {
     const card = root.ownerDocument.createElement(BROWSER_ARTIFACT_SOCIAL_CARD_TAG_NAME);
 
     card.imageSource = image;
@@ -49,7 +58,10 @@ defineBrowserArtifacts(({ pdf, png }) => {
 
   pdf(
     'sample-a4.pdf',
-    { height: 1123, width: 794 },
+    {
+      height: 1123,
+      width: 794,
+    },
     (root) => {
       const document = root.ownerDocument;
       const page = document.createElement(BROWSER_ARTIFACT_PRINT_PAGE_TAG_NAME);

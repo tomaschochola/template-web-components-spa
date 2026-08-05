@@ -10,7 +10,6 @@
  * @see {@link https://github.com/sponsors/tomaschochola} GitHub Sponsors
  */
 
-import { resolve } from 'node:path';
 import { WebpackConfigBuilder } from '@tomaschochola/tooling-webpack';
 
 export default function (env = {}, argv = {}) {
@@ -22,12 +21,10 @@ export default function (env = {}, argv = {}) {
   const appEnv = tooling.appEnv;
   const appName = tooling.appName;
   const appVersion = tooling.appVersion;
-  const webpackMode = tooling.webpackMode;
 
   const isProductionApp = tooling.isProductionMode && appEnv === 'production';
 
   tooling = tooling
-    .setOutputPath(resolve('dist'))
     .setEntries({
       index: ['./src/polyfills.ts', './src/observability.ts', './src/index.ts'],
     })
@@ -40,11 +37,9 @@ export default function (env = {}, argv = {}) {
       'process.env.APP_ENV': JSON.stringify(appEnv),
       'process.env.APP_NAME': JSON.stringify(appName),
       'process.env.APP_VERSION': JSON.stringify(appVersion),
-      'process.env.WEBPACK_MODE': JSON.stringify(webpackMode),
     })
     .addHtmlPlugin({
       template: './src/index.html',
-      filename: 'index.html',
     })
     .addPublicCopyPlugin()
     .addRobotsPlugin({
@@ -58,20 +53,15 @@ export default function (env = {}, argv = {}) {
     .addImageMinimizer();
 
   if (tooling.isProductionMode) {
-    tooling = tooling.addGzipCompressionPlugin().addBrotliCompressionPlugin().addWorkboxServiceWorkerPlugin();
+    tooling = tooling
+      .addGzipCompressionPlugin()
+      .addBrotliCompressionPlugin()
+      .addWorkboxServiceWorkerPlugin();
   }
-
-  const config = tooling.toConfig();
 
   if (appEnv === 'playwright') {
-    config.devServer = {
-      ...config.devServer,
-      client: false,
-      hot: false,
-      liveReload: false,
-      webSocketServer: false,
-    };
+    tooling = tooling.disableDevServerLiveUpdates();
   }
 
-  return config;
+  return tooling.toConfig();
 }

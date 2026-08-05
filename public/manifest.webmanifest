@@ -1,7 +1,7 @@
 {
   "background_color": "#fdf7ff",
   "categories": ["developer", "productivity", "utilities"],
-  "description": "tomaschochola/template-web-components-spa",
+  "description": "Web Components single-page application template with TypeScript, Webpack, Playwright, and OpenTelemetry.",
   "dir": "ltr",
   "display": "standalone",
   "icons": [
