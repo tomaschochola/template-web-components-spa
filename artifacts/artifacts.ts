@@ -23,38 +23,50 @@ defineBrowserArtifactPrintPage(customElements);
 defineBrowserArtifactSocialCard(customElements);
 
 defineBrowserArtifacts(({ pdf, png }) => {
-  png('open-graph.png', {
-    height: 630,
-    width: 1200,
-  }, (root) => {
-    const card = root.ownerDocument.createElement(BROWSER_ARTIFACT_SOCIAL_CARD_TAG_NAME);
+  png(
+    'open-graph.png',
+    {
+      height: 630,
+      width: 1200,
+    },
+    (root) => {
+      const card = root.ownerDocument.createElement(BROWSER_ARTIFACT_SOCIAL_CARD_TAG_NAME);
 
-    card.imageSource = image;
-    card.heading = 'Template';
-    root.replaceChildren(card);
-  });
+      card.imageSource = image;
+      card.heading = 'Template';
+      root.replaceChildren(card);
+    },
+  );
 
-  png('facebook-page-cover.png', {
-    height: 315,
-    width: 851,
-  }, (root) => {
-    const card = root.ownerDocument.createElement(BROWSER_ARTIFACT_SOCIAL_CARD_TAG_NAME);
+  png(
+    'facebook-page-cover.png',
+    {
+      height: 315,
+      width: 851,
+    },
+    (root) => {
+      const card = root.ownerDocument.createElement(BROWSER_ARTIFACT_SOCIAL_CARD_TAG_NAME);
 
-    card.imageSource = image;
-    card.heading = 'Template';
-    root.replaceChildren(card);
-  });
+      card.imageSource = image;
+      card.heading = 'Template';
+      root.replaceChildren(card);
+    },
+  );
 
-  png('facebook-group-cover.png', {
-    height: 856,
-    width: 1640,
-  }, (root) => {
-    const card = root.ownerDocument.createElement(BROWSER_ARTIFACT_SOCIAL_CARD_TAG_NAME);
+  png(
+    'facebook-group-cover.png',
+    {
+      height: 856,
+      width: 1640,
+    },
+    (root) => {
+      const card = root.ownerDocument.createElement(BROWSER_ARTIFACT_SOCIAL_CARD_TAG_NAME);
 
-    card.imageSource = image;
-    card.heading = 'Template';
-    root.replaceChildren(card);
-  });
+      card.imageSource = image;
+      card.heading = 'Template';
+      root.replaceChildren(card);
+    },
+  );
 
   pdf(
     'sample-a4.pdf',
