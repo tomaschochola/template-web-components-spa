@@ -28,7 +28,8 @@ export default function (env = {}, argv = {}) {
     .setEntries({
       index: ['./src/polyfills.ts', './src/observability.ts', './src/index.ts'],
     })
-    .setDevServerPort(61101)
+    .setDevServerPort(61100)
+    .enableDevServerHistoryApiFallback()
     .addBabelLoader()
     .addStyleLoaders()
     .addHtmlLoader()
@@ -57,10 +58,6 @@ export default function (env = {}, argv = {}) {
       .addGzipCompressionPlugin()
       .addBrotliCompressionPlugin()
       .addWorkboxServiceWorkerPlugin();
-  }
-
-  if (appEnv === 'playwright') {
-    tooling = tooling.disableDevServerLiveUpdates();
   }
 
   return tooling.toConfig();
