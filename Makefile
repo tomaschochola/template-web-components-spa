@@ -163,8 +163,7 @@ build: ./node_modules/.package-lock.json ./package.json ./package-lock.json gene
 	npm exec --ignore-scripts -- webpack-cli build --fail-on-warnings --mode=production --config-node-env=production --env APP_ENV=production
 
 .PHONY: artifacts
-artifacts: ./node_modules/.package-lock.json ./package.json ./package-lock.json \
-    ./artifacts/sample-a4.scss ./artifacts/sample-a4.ts ./assets/icon.svg
+artifacts: ./node_modules/.package-lock.json ./package.json ./package-lock.json ./assets/icon.svg
 	npm exec --ignore-scripts -- tooling-browser-renderer png \
 		./generated/artifacts/open-graph.png \
 		--entry @tomaschochola/tooling-browser-renderer/products/open-graph \
@@ -172,24 +171,6 @@ artifacts: ./node_modules/.package-lock.json ./package.json ./package-lock.json 
 		--data open-graph-line-1=Template \
 		--width 1200 \
 		--height 630
-	npm exec --ignore-scripts -- tooling-browser-renderer png \
-		./generated/artifacts/facebook-page-cover.png \
-		--entry @tomaschochola/tooling-browser-renderer/products/open-graph \
-		--asset image=./assets/icon.svg \
-		--data open-graph-line-1=Template \
-		--width 851 \
-		--height 315
-	npm exec --ignore-scripts -- tooling-browser-renderer png \
-		./generated/artifacts/facebook-group-cover.png \
-		--entry @tomaschochola/tooling-browser-renderer/products/open-graph \
-		--asset image=./assets/icon.svg \
-		--data open-graph-line-1=Template \
-		--width 1640 \
-		--height 856
-	npm exec --ignore-scripts -- tooling-browser-renderer pdf \
-		./generated/artifacts/sample-a4.pdf \
-		--entry ./artifacts/sample-a4.ts \
-		--format A4
 
 .PHONY: generated
 generated: artifacts icons
