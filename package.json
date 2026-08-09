@@ -40,7 +40,7 @@
   "devDependencies": {
     "@playwright/test": "1.62.1",
     "@tomaschochola/tooling-babel": "github:tomaschochola/tooling-babel#main",
-    "@tomaschochola/tooling-browser-artifacts": "github:tomaschochola/tooling-browser-artifacts#main",
+    "@tomaschochola/tooling-browser-renderer": "github:tomaschochola/tooling-browser-renderer#main",
     "@tomaschochola/tooling-eslint": "github:tomaschochola/tooling-eslint#main",
     "@tomaschochola/tooling-favicons": "github:tomaschochola/tooling-favicons#main",
     "@tomaschochola/tooling-playwright": "github:tomaschochola/tooling-playwright#main",

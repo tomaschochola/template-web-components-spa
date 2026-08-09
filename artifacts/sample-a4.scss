@@ -1,0 +1,54 @@
+/**
+ * @file
+ * @author Tomáš Chochola <tomaschochola@tomaschochola.cz>
+ * @copyright © 2026 Tomáš Chochola <tomaschochola@tomaschochola.cz>
+ *
+ * @license CC-BY-ND-4.0
+ *
+ * @see {@link https://creativecommons.org/licenses/by-nd/4.0/} License
+ * @see {@link https://github.com/tomaschochola} GitHub Profile
+ * @see {@link https://github.com/sponsors/tomaschochola} GitHub Sponsors
+ */
+
+@page {
+  margin: 0;
+}
+
+:root {
+  color-scheme: only light;
+}
+
+html,
+body {
+  min-block-size: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+.sample-a4-document {
+  background: #fff;
+  box-sizing: border-box;
+  color: #1d1b20;
+  display: block;
+  font-family: 'Atkinson Hyperlegible Next Variable', 'Atkinson Hyperlegible Next', Roboto, 'Noto Sans', system-ui, sans-serif;
+  font-size: 11pt;
+  line-height: 1.5;
+  min-block-size: 100%;
+  padding: 18mm;
+  print-color-adjust: exact;
+  text-size-adjust: 100%;
+}
+
+.sample-a4-document h1 {
+  font-size: 2em;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-block: 0 0.5em;
+  text-wrap: balance;
+}
+
+.sample-a4-document p {
+  margin-block: 1em 0;
+}

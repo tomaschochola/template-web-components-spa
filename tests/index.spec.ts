@@ -11,10 +11,10 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { assertAxe, loadPage } from './test';
+import { assertNoAxeViolations, loadPage } from './test';
 
 test('/', async ({ page }) => {
   await loadPage(page, '/');
   await expect(page).toHaveTitle('tomaschochola/template-web-components-spa');
-  await assertAxe(page);
+  await assertNoAxeViolations(page);
 });
