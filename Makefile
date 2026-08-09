@@ -171,7 +171,8 @@ generated: artifacts icons
 
 .PHONY: icons
 icons: ./node_modules/.package-lock.json ./package.json ./package-lock.json ./assets/icon.svg
-	npm exec --ignore-scripts -- generate-icons ./assets/icon.svg ./generated symbol '#141218'
+	npm exec --ignore-scripts -- tooling-favicons web ./assets/icon.svg ./generated --background '#141218'
+	npm exec --ignore-scripts -- tooling-favicons pwa ./assets/icon.svg ./assets/icon.svg ./generated --background '#141218' --maskable-fit source
 
 .PHONY: playwright_failed
 playwright_failed: ./node_modules/.package-lock.json ./package.json ./package-lock.json ./playwright.config.js generated
