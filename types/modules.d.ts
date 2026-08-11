@@ -34,6 +34,24 @@ declare module '*?asset' {
   export default value;
 }
 
+declare module '*.template.html?template' {
+  const value: import('../src/static-source').StaticHtmlSource;
+
+  export default value;
+}
+
+declare module '*.scss?sheet' {
+  const value: CSSStyleSheet;
+
+  export default value;
+}
+
+declare module '*.css?sheet' {
+  const value: CSSStyleSheet;
+
+  export default value;
+}
+
 declare module '*&as=avif' {
   const value: string;
 
@@ -54,18 +72,6 @@ declare module '*&as=jpg' {
 
 declare module '*&as=png' {
   const value: string;
-
-  export default value;
-}
-
-declare module '*.scss' {
-  const value: CSSStyleSheet;
-
-  export default value;
-}
-
-declare module '*.css' {
-  const value: CSSStyleSheet;
 
   export default value;
 }

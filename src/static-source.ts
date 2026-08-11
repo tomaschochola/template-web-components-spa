@@ -34,6 +34,30 @@ const staticSourcePolicy = trustedTypeFactory.createPolicy('app-static-source', 
 
 const generatedServiceWorkerPath = '/sw.js';
 
+declare const staticHtmlSourceBrand: unique symbol;
+
+export type StaticHtmlSource = string & {
+  readonly [staticHtmlSourceBrand]: 'StaticHtmlSource';
+};
+
+type TrustedTemplateHtml = ReturnType<typeof staticSourcePolicy.createHTML>;
+
+type TrustedTemplateSink = {
+  innerHTML: TrustedTemplateHtml;
+};
+
+function setTrustedTemplateHtml(template: HTMLTemplateElement, trustedHtml: TrustedTemplateHtml): void {
+  (template as unknown as TrustedTemplateSink).innerHTML = trustedHtml;
+}
+
+export function compileStaticTemplate(source: StaticHtmlSource): HTMLTemplateElement {
+  const template = document.createElement('template');
+  const trustedHtml = staticSourcePolicy.createHTML(source);
+  setTrustedTemplateHtml(template, trustedHtml);
+
+  return template;
+}
+
 type TrustedExecutableScriptUrl = ReturnType<typeof staticSourcePolicy.createScriptURL>;
 
 type TrustedServiceWorkerContainer = {

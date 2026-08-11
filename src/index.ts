@@ -11,8 +11,14 @@
  */
 
 import '@fontsource-variable/atkinson-hyperlegible-next';
-import './index.scss';
-import { registerGeneratedServiceWorker } from './static-source';
+import appTemplateSource from './app.template.html?template';
+import appSheet from './index.scss?sheet';
+import { compileStaticTemplate, registerGeneratedServiceWorker } from './static-source';
+
+const appTemplate = compileStaticTemplate(appTemplateSource);
+
+document.adoptedStyleSheets = [...document.adoptedStyleSheets, appSheet];
+document.body.append(appTemplate.content.cloneNode(true));
 
 function onWindowLoad(callback: () => void): void {
   if (document.readyState === 'complete') {
