@@ -12,6 +12,7 @@
 
 import '@fontsource-variable/atkinson-hyperlegible-next';
 import './index.scss';
+import { registerGeneratedServiceWorker } from './static-source';
 
 function onWindowLoad(callback: () => void): void {
   if (document.readyState === 'complete') {
@@ -27,7 +28,7 @@ function registerServiceWorker(): void {
   }
 
   onWindowLoad(() => {
-    void navigator.serviceWorker.register('/sw.js').catch((error: unknown) => {
+    void registerGeneratedServiceWorker().catch((error: unknown) => {
       console.error('Service Worker registration failed.', error);
     });
   });
