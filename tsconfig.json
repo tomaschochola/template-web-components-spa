@@ -1,7 +1,4 @@
 {
   "extends": "@tomaschochola/tooling-typescript/src/browser_webpack_babel.json",
-  "compilerOptions": {
-    "types": ["trusted-types"]
-  },
   "include": ["./src/**/*", "./types/**/*"]
 }
