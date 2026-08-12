@@ -10,15 +10,16 @@
  * @see {@link https://github.com/sponsors/tomaschochola} GitHub Sponsors
  */
 
-import { metrics, trace, ValueType, type Gauge, type Histogram } from '@opentelemetry/api';
+import { metrics, ValueType, type Gauge, type Histogram } from '@opentelemetry/api';
 import { logs, SeverityNumber } from '@opentelemetry/api-logs';
-import { getWebAutoInstrumentations } from '@opentelemetry/auto-instrumentations-web';
-import { ZoneContextManager } from '@opentelemetry/context-zone';
 import { CompositePropagator, W3CBaggagePropagator, W3CTraceContextPropagator } from '@opentelemetry/core';
 import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-http';
 import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-http';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import { registerInstrumentations } from '@opentelemetry/instrumentation';
+import { DocumentLoadInstrumentation } from '@opentelemetry/instrumentation-document-load';
+import { FetchInstrumentation } from '@opentelemetry/instrumentation-fetch';
+import { XMLHttpRequestInstrumentation } from '@opentelemetry/instrumentation-xml-http-request';
 import { browserDetector } from '@opentelemetry/opentelemetry-browser-detector';
 import { defaultResource, detectResources, resourceFromAttributes } from '@opentelemetry/resources';
 import { BatchLogRecordProcessor, LoggerProvider } from '@opentelemetry/sdk-logs';
@@ -36,7 +37,7 @@ import {
   ATTR_URL_FULL,
   ATTR_URL_PATH,
   ATTR_URL_QUERY,
-  ATTR_USER_AGENT_ORIGINAL,
+  ERROR_TYPE_VALUE_OTHER,
 } from '@opentelemetry/semantic-conventions';
 import { ATTR_DEPLOYMENT_ENVIRONMENT_NAME } from '@opentelemetry/semantic-conventions/incubating';
 import { onCLS, onFCP, onINP, onLCP, onTTFB, type Metric } from 'web-vitals';
@@ -63,7 +64,6 @@ const resource = defaultResource()
       [ATTR_SERVICE_NAME]: APP_NAME,
       [ATTR_SERVICE_VERSION]: APP_VERSION,
       [ATTR_DEPLOYMENT_ENVIRONMENT_NAME]: APP_ENV,
-      [ATTR_USER_AGENT_ORIGINAL]: navigator.userAgent,
     }),
   )
   .merge(detectResources({ detectors: [browserDetector] }));
@@ -80,13 +80,10 @@ const tracerProvider = new WebTracerProvider({
 });
 
 tracerProvider.register({
-  contextManager: new ZoneContextManager(),
   propagator: new CompositePropagator({
     propagators: [new W3CTraceContextPropagator(), new W3CBaggagePropagator()],
   }),
 });
-
-trace.setGlobalTracerProvider(tracerProvider);
 
 const meterProvider = new MeterProvider({
   resource: resource,
@@ -118,7 +115,7 @@ registerInstrumentations({
   tracerProvider: tracerProvider,
   meterProvider: meterProvider,
   loggerProvider: loggerProvider,
-  instrumentations: [getWebAutoInstrumentations()],
+  instrumentations: [new DocumentLoadInstrumentation(), new FetchInstrumentation(), new XMLHttpRequestInstrumentation()],
 });
 
 const meter = metrics.getMeter('web-vitals');
@@ -155,8 +152,6 @@ const inpRecorder = meter.createHistogram('web_vitals.inp', {
 
 function recordWebVital(recorder: Histogram | Gauge, metric: Metric) {
   recorder.record(metric.value, {
-    id: metric.id,
-    delta: metric.delta,
     rating: metric.rating,
     navigation: metric.navigationType,
   });
@@ -182,32 +177,33 @@ onINP((metric) => {
   recordWebVital(inpRecorder, metric);
 });
 
-const logger = logs.getLogger('logs');
+const logger = logs.getLogger(APP_NAME, APP_VERSION);
 
-window.addEventListener('error', (event: ErrorEvent) => {
-  console.error(event);
-
-  let message: string | undefined = undefined;
-
-  if (event.error instanceof Error) {
-    message = event.error.message;
-  } else if (event.error instanceof String || typeof event.error === 'string') {
-    message = event.error.toString();
-  }
+function emitError(error: unknown, fallbackMessage: string): void {
+  const exception = error instanceof Error ? error : undefined;
+  const message = exception?.message ?? (typeof error === 'string' ? error : fallbackMessage);
 
   logger.emit({
     attributes: {
-      [ATTR_ERROR_TYPE]: '500',
-      [ATTR_EXCEPTION_TYPE]: event.error instanceof Error ? event.error.name : undefined,
+      [ATTR_ERROR_TYPE]: exception?.name ?? ERROR_TYPE_VALUE_OTHER,
+      [ATTR_EXCEPTION_TYPE]: exception?.name,
       [ATTR_EXCEPTION_MESSAGE]: message,
-      [ATTR_EXCEPTION_STACKTRACE]: event.error instanceof Error ? event.error.stack : undefined,
+      [ATTR_EXCEPTION_STACKTRACE]: exception?.stack,
       [ATTR_URL_FULL]: location.href,
       [ATTR_URL_PATH]: location.pathname,
-      [ATTR_URL_QUERY]: location.search,
-      [ATTR_URL_FRAGMENT]: location.hash,
+      [ATTR_URL_QUERY]: location.search.slice(1),
+      [ATTR_URL_FRAGMENT]: location.hash.slice(1),
     },
     severityNumber: SeverityNumber.ERROR,
     severityText: 'ERROR',
-    body: event.message,
+    body: message,
   });
+}
+
+window.addEventListener('error', (event: ErrorEvent) => {
+  emitError(event.error as unknown, event.message);
+});
+
+window.addEventListener('unhandledrejection', (event: PromiseRejectionEvent) => {
+  emitError(event.reason as unknown, 'Unhandled promise rejection.');
 });

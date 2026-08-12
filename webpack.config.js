@@ -25,8 +25,16 @@ export default function (env = {}, argv = {}) {
   const isProductionApp = tooling.isProductionMode && appEnv === 'production';
 
   tooling = tooling
+    .setDevtool(tooling.isProductionMode ? false : 'source-map')
     .setEntries({
-      index: ['./src/polyfills.ts', './src/observability.ts', './src/index.ts'],
+      index: [
+        // './src/polyfills.ts',
+        // './src/observability.ts',
+        '@fontsource-variable/atkinson-hyperlegible-next',
+        './src/index.scss',
+        './src/index.ts',
+        './src/workbox.ts',
+      ],
     })
     .setDevServerPort(61100)
     .enableDevServerHistoryApiFallback()
@@ -43,18 +51,34 @@ export default function (env = {}, argv = {}) {
       template: './src/index.html',
     })
     .addPublicCopyPlugin()
+    .addCopyPlugin([
+      {
+        from: './generated/favicons',
+        to: '.',
+      },
+      {
+        from: './generated/open-graph/open-graph.png',
+        to: 'artifacts/open-graph.png',
+      },
+    ])
     .addRobotsPlugin({
       indexable: isProductionApp,
     })
-    .addCopyFrom('./generated')
     .addTerserMinimizer()
     .addCssMinimizer()
     .addHtmlMinimizer()
     .addJsonMinimizer()
     .addImageMinimizer();
 
-  if (tooling.isProductionMode) {
+  if (isProductionApp) {
     tooling = tooling.addGzipCompressionPlugin().addBrotliCompressionPlugin().addWorkboxServiceWorkerPlugin();
+  } else {
+    tooling = tooling.addCopyPlugin([
+      {
+        from: './assets/service-worker-retirement.js',
+        to: 'sw.js',
+      },
+    ]);
   }
 
   return tooling.toConfig();

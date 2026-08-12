@@ -107,12 +107,26 @@ deps_install: npm_install
 deps_clean: npm_clean
 
 .PHONY: assets_generate
-assets_generate: ./generated/artifacts/open-graph.png icons_generate
+assets_generate: favicons_generate open_graph_generate
 
-.PHONY: icons_generate
-icons_generate: ./node_modules/.package-lock.json ./package.json ./package-lock.json ./assets/icon.svg
-	npm exec --no --ignore-scripts -- tooling-favicons web ./assets/icon.svg ./generated --apple-background '#141218'
-	npm exec --no --ignore-scripts -- tooling-favicons pwa ./assets/icon.svg ./generated --maskable-background '#141218' --maskable-fit canvas
+.PHONY: favicons_generate
+favicons_generate: ./node_modules/.package-lock.json ./package.json ./package-lock.json ./assets/icon.svg
+	rm -rf ./generated/favicons
+	mkdir -p ./generated/favicons
+	npm exec --no --ignore-scripts -- tooling-favicons web ./assets/icon.svg ./generated/favicons --apple-background '#141218'
+	npm exec --no --ignore-scripts -- tooling-favicons pwa ./assets/icon.svg ./generated/favicons --maskable-background '#141218' --maskable-fit canvas
+
+.PHONY: open_graph_generate
+open_graph_generate: ./node_modules/.package-lock.json ./package.json ./package-lock.json ./assets/icon.svg
+	rm -rf ./generated/open-graph
+	mkdir -p ./generated/open-graph
+	npm exec --no --ignore-scripts -- tooling-browser-renderer png \
+		./generated/open-graph/open-graph.png \
+		--entry @tomaschochola/tooling-browser-renderer/products/open-graph \
+		--asset image=./assets/icon.svg \
+		--data open-graph-line-1=Template \
+		--width 1200 \
+		--height 630
 
 .PHONY: trimmer_fix
 trimmer_fix: ./node_modules/.package-lock.json ./package.json ./package-lock.json
@@ -221,15 +235,6 @@ devcontainer_check:
 ./dist.zip: build
 	rm -f ./dist.zip
 	cd ./dist && zip -q -r ../dist.zip . -x '*.map' '*.map.br' '*.map.gz'
-
-./generated/artifacts/open-graph.png: ./Makefile ./node_modules/.package-lock.json ./package.json ./package-lock.json ./assets/icon.svg
-	npm exec --no --ignore-scripts -- tooling-browser-renderer png \
-		./generated/artifacts/open-graph.png \
-		--entry @tomaschochola/tooling-browser-renderer/products/open-graph \
-		--asset image=./assets/icon.svg \
-		--data open-graph-line-1=Template \
-		--width 1200 \
-		--height 630
 
 ./node_modules/.package-lock.json: ./.npmrc ./package.json ./package-lock.json
 	$(MAKE) npm_install

@@ -10,11 +10,15 @@
  * @see {@link https://github.com/sponsors/tomaschochola} GitHub Sponsors
  */
 
-import { expect, test } from '@playwright/test';
-import { assertNoAxeViolations, loadPage } from './test';
+import { test } from '@playwright/test';
+import { assertPage } from '@tomaschochola/tooling-playwright';
 
-test('/', async ({ page }) => {
-  await loadPage(page, '/');
-  await expect(page).toHaveTitle('tomaschochola/template-web-components-spa');
-  await assertNoAxeViolations(page);
+// Sonar cannot follow assertion implementations across an external package declaration.
+// eslint-disable-next-line sonarjs/assertions-in-tests
+test('renders the home page', async ({ page }) => {
+  await assertPage(page, {
+    heading: 'tomaschochola/template-web-components-spa',
+    title: 'tomaschochola/template-web-components-spa',
+    url: '/',
+  });
 });
