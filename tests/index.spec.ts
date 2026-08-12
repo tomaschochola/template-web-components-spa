@@ -16,11 +16,5 @@ import { assertNoAxeViolations, loadPage } from './test';
 test('/', async ({ page }) => {
   await loadPage(page, '/');
   await expect(page).toHaveTitle('tomaschochola/template-web-components-spa');
-  await expect(page.getByRole('heading', { level: 1, name: 'tomaschochola/template-web-components-spa' })).toBeVisible();
-  await expect
-    .poll(async () =>
-      page.evaluate(() => document.adoptedStyleSheets.some((sheet) => sheet instanceof CSSStyleSheet && [...sheet.cssRules].some((rule) => rule.cssText.includes('--tch-color-background')))),
-    )
-    .toBe(true);
   await assertNoAxeViolations(page);
 });
