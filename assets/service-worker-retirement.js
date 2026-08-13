@@ -21,8 +21,8 @@ async function retireServiceWorker() {
   await Promise.all(windowClients.map((client) => client.navigate(client.url)));
 }
 
-globalThis.addEventListener('install', () => {
-  void globalThis.skipWaiting();
+globalThis.addEventListener('install', (event) => {
+  event.waitUntil(globalThis.skipWaiting());
 });
 
 globalThis.addEventListener('activate', (event) => {
