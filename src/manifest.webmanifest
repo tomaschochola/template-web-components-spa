@@ -1,54 +1,45 @@
 {
   "background_color": "#fdf7ff",
-  "categories": ["developer", "productivity", "utilities"],
   "description": "Web Components single-page application template with TypeScript, Webpack, Playwright, and OpenTelemetry.",
-  "dir": "ltr",
   "display": "standalone",
   "icons": [
     {
-      "purpose": "any",
       "sizes": "192x192",
-      "src": "/icon-192x192.png",
+      "src": "../build/favicons/icon-192x192.png",
       "type": "image/png"
     },
     {
-      "purpose": "any",
       "sizes": "384x384",
-      "src": "/icon-384x384.png",
+      "src": "../build/favicons/icon-384x384.png",
       "type": "image/png"
     },
     {
-      "purpose": "any",
       "sizes": "512x512",
-      "src": "/icon-512x512.png",
+      "src": "../build/favicons/icon-512x512.png",
       "type": "image/png"
     },
     {
-      "purpose": "any",
       "sizes": "1024x1024",
-      "src": "/icon-1024x1024.png",
+      "src": "../build/favicons/icon-1024x1024.png",
       "type": "image/png"
     },
     {
       "purpose": "maskable",
       "sizes": "512x512",
-      "src": "/maskable-icon-512x512.png",
+      "src": "../build/favicons/maskable-icon-512x512.png",
       "type": "image/png"
     },
     {
       "purpose": "maskable",
       "sizes": "1024x1024",
-      "src": "/maskable-icon-1024x1024.png",
+      "src": "../build/favicons/maskable-icon-1024x1024.png",
       "type": "image/png"
     }
   ],
-  "id": "/",
   "lang": "en",
-  "name": "tomaschochola/template-web-components-spa",
-  "orientation": "any",
-  "prefer_related_applications": false,
-  "scope": "/",
-  "short_name": "tomaschochola/template-web-components-spa",
-  "start_url": "/",
+  "name": "Web Components SPA Template",
+  "scope": "./",
+  "short_name": "WC SPA",
+  "start_url": "./",
   "theme_color": "#fdf7ff"
 }

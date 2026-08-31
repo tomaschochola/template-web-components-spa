@@ -17,8 +17,8 @@ import { assertPage } from '@tomaschochola/tooling-playwright';
 // eslint-disable-next-line sonarjs/assertions-in-tests
 test('renders the home page', async ({ page }) => {
   await assertPage(page, {
-    heading: 'tomaschochola/template-web-components-spa',
-    title: 'tomaschochola/template-web-components-spa',
+    heading: 'Web Components SPA Template',
+    title: 'Web Components SPA Template',
     url: '/',
   });
 });

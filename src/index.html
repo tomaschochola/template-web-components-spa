@@ -20,16 +20,11 @@
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
 
-    <title>tomaschochola/template-web-components-spa</title>
+    <title>Web Components SPA Template</title>
 
     <meta
       name="description"
       content="Web Components single-page application template with TypeScript, Webpack, Playwright, and OpenTelemetry."
-    />
-
-    <meta
-      name="keywords"
-      content="tomaschochola, TomasChochola, Tomas Chochola, Tomáš Chochola, template-web-components-spa"
     />
 
     <meta
@@ -39,7 +34,7 @@
 
     <meta
       name="application-name"
-      content="tomaschochola/template-web-components-spa"
+      content="Web Components SPA Template"
     />
 
     <meta
@@ -54,7 +49,7 @@
 
     <link
       rel="canonical"
-      href="https://tomaschochola.cz/"
+      href="{{ PUBLIC_URL }}"
     />
 
     <meta
@@ -64,12 +59,12 @@
 
     <meta
       property="og:site_name"
-      content="tomaschochola/template-web-components-spa"
+      content="Web Components SPA Template"
     />
 
     <meta
       property="og:title"
-      content="tomaschochola/template-web-components-spa"
+      content="Web Components SPA Template"
     />
 
     <meta
@@ -79,17 +74,17 @@
 
     <meta
       property="og:url"
-      content="https://tomaschochola.cz/"
+      content="{{ PUBLIC_URL }}"
     />
 
     <meta
       property="og:image"
-      content="https://tomaschochola.cz/artifacts/open-graph.png"
+      content="../build/open-graph/open-graph.png"
     />
 
     <meta
       property="og:image:secure_url"
-      content="https://tomaschochola.cz/artifacts/open-graph.png"
+      content="../build/open-graph/open-graph.png"
     />
 
     <meta
@@ -109,7 +104,7 @@
 
     <meta
       property="og:image:alt"
-      content="tomaschochola/template-web-components-spa preview"
+      content="Web Components SPA Template preview"
     />
 
     <meta
@@ -124,7 +119,7 @@
 
     <meta
       name="twitter:title"
-      content="tomaschochola/template-web-components-spa"
+      content="Web Components SPA Template"
     />
 
     <meta
@@ -134,12 +129,12 @@
 
     <meta
       name="twitter:image"
-      content="https://tomaschochola.cz/artifacts/open-graph.png"
+      content="../build/open-graph/open-graph.png"
     />
 
     <meta
       name="twitter:image:alt"
-      content="tomaschochola/template-web-components-spa preview"
+      content="Web Components SPA Template preview"
     />
 
     <meta
@@ -148,51 +143,41 @@
     />
 
     <meta
-      name="apple-mobile-web-app-status-bar-style"
-      content="default"
-    />
-
-    <meta
       name="apple-mobile-web-app-title"
-      content="tomaschochola/template-web-components-spa"
+      content="WC SPA"
     />
 
-    <!-- webpackIgnore: true -->
     <link
       rel="icon"
       type="image/vnd.microsoft.icon"
       sizes="16x16 32x32 48x48"
-      href="/favicon.ico"
+      href="../build/favicons/favicon.ico"
     />
 
-    <!-- webpackIgnore: true -->
     <link
       rel="icon"
       type="image/png"
       sizes="96x96"
-      href="/favicon-96x96.png"
+      href="../build/favicons/favicon-96x96.png"
     />
 
-    <!-- webpackIgnore: true -->
     <link
       rel="icon"
       type="image/svg+xml"
       sizes="any"
-      href="/favicon.svg"
+      href="../build/favicons/favicon.svg"
     />
 
-    <!-- webpackIgnore: true -->
     <link
       rel="apple-touch-icon"
       type="image/png"
       sizes="180x180"
-      href="/apple-touch-icon.png"
+      href="../build/favicons/apple-touch-icon.png"
     />
 
-    <!-- webpackIgnore: true -->
     <link
       rel="manifest"
-      href="/manifest.webmanifest"
+      href="./manifest.webmanifest"
     />
 
     <script type="application/ld+json">
@@ -200,12 +185,12 @@
         "@context": "https://schema.org",
         "@graph": [
           {
-            "@id": "https://tomaschochola.cz/#website",
+            "@id": "{{ PUBLIC_URL }}#website",
             "@type": "WebSite",
             "description": "Web Components single-page application template with TypeScript, Webpack, Playwright, and OpenTelemetry.",
             "inLanguage": "en",
-            "name": "tomaschochola/template-web-components-spa",
-            "url": "https://tomaschochola.cz/"
+            "name": "Web Components SPA Template",
+            "url": "{{ PUBLIC_URL }}"
           },
           {
             "@id": "https://tomaschochola.cz/#person",
@@ -220,7 +205,7 @@
   </head>
   <body>
     <main>
-      <h1>tomaschochola/template-web-components-spa</h1>
+      <h1>Web Components SPA Template</h1>
     </main>
   </body>
 </html>

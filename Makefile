@@ -26,6 +26,9 @@ never:
 
 # Options
 
+APP_ENV ?= production
+APP_INDEXABLE ?= false
+APP_URL ?= https://tomaschochola.cz/
 DEVCONTAINER_FILTER := label=devcontainer.local_folder=$(CURDIR)
 
 # Public goals
@@ -56,9 +59,8 @@ update: npm_config_check ./package.json ./package-lock.json npm_update
 
 .PHONY: clean
 clean:
+	rm -rf ./build
 	rm -rf ./dist
-	rm -f ./dist.zip
-	rm -rf ./generated
 	rm -rf ./test-results
 
 .PHONY: distclean
@@ -66,17 +68,17 @@ distclean: clean deps_clean
 
 .PHONY: build
 build: ./node_modules/.package-lock.json ./package.json ./package-lock.json assets_generate
-	npm exec --no --ignore-scripts -- webpack-cli build --fail-on-warnings --mode=production --config-node-env=production --env APP_ENV=production
+	npm exec --no --ignore-scripts -- webpack-cli build --fail-on-warnings --mode=production --config-node-env=production --env APP_ENV="$(APP_ENV)" --env APP_INDEXABLE="$(APP_INDEXABLE)" --env APP_URL="$(APP_URL)"
 
 .PHONY: archive
-archive: ./dist.zip
+archive: build
 
 .PHONY: postcreate
 postcreate: deps_install assets_generate
 
 .PHONY: start serve server dev
 start serve server dev: ./node_modules/.package-lock.json ./package.json ./package-lock.json assets_generate
-	npm exec --no --ignore-scripts -- webpack-cli serve --mode=development --config-node-env=development --env APP_ENV=local
+	npm exec --no --ignore-scripts -- webpack-cli serve --mode=development --config-node-env=development --env APP_ENV=local --env APP_URL="$(APP_URL)"
 
 .PHONY: up
 up: devcontainer_check
@@ -111,17 +113,17 @@ assets_generate: favicons_generate open_graph_generate
 
 .PHONY: favicons_generate
 favicons_generate: ./node_modules/.package-lock.json ./package.json ./package-lock.json ./assets/icon.svg
-	rm -rf ./generated/favicons
-	mkdir -p ./generated/favicons
-	npm exec --no --ignore-scripts -- tooling-favicons web ./assets/icon.svg ./generated/favicons --apple-background '#141218'
-	npm exec --no --ignore-scripts -- tooling-favicons pwa ./assets/icon.svg ./generated/favicons --maskable-background '#141218' --maskable-fit canvas
+	rm -rf ./build/favicons
+	mkdir -p ./build/favicons
+	npm exec --no --ignore-scripts -- tooling-favicons web ./assets/icon.svg ./build/favicons --apple-background '#141218'
+	npm exec --no --ignore-scripts -- tooling-favicons pwa ./assets/icon.svg ./build/favicons --maskable-background '#141218' --maskable-fit safe
 
 .PHONY: open_graph_generate
 open_graph_generate: ./node_modules/.package-lock.json ./package.json ./package-lock.json ./assets/icon.svg
-	rm -rf ./generated/open-graph
-	mkdir -p ./generated/open-graph
+	rm -rf ./build/open-graph
+	mkdir -p ./build/open-graph
 	npm exec --no --ignore-scripts -- tooling-browser-renderer png \
-		./generated/open-graph/open-graph.png \
+		./build/open-graph/open-graph.png \
 		--entry @tomaschochola/tooling-browser-renderer/products/open-graph \
 		--asset image=./assets/icon.svg \
 		--data open-graph-line-1=Template \
@@ -231,10 +233,6 @@ devcontainer_check:
 	docker build --check --file ./.devcontainer/Dockerfile --platform linux/amd64 ./.devcontainer
 
 # Private targets
-
-./dist.zip: build
-	rm -f ./dist.zip
-	cd ./dist && zip -q -r ../dist.zip . -x '*.map' '*.map.br' '*.map.gz'
 
 ./node_modules/.package-lock.json: ./.npmrc ./package.json ./package-lock.json
 	$(MAKE) npm_install

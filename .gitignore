@@ -14,9 +14,8 @@
 /.secrets
 
 # generated artifacts
+/build
 /dist
-/dist.zip
-/generated
 
 # playwright
 /test-results
