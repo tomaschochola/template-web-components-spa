@@ -11,18 +11,18 @@
  */
 
 :root {
-  scrollbar-color: var(--app-scrollbar-color) var(--app-scrollbar-track-color);
-  scrollbar-width: none;
+    scrollbar-color: var(--app-scrollbar-color) var(--app-scrollbar-track-color);
+    scrollbar-width: none;
 }
 
 @media screen and (width >= 600px) and (width <= 1199px) {
-  :root {
-    scrollbar-width: thin;
-  }
+    :root {
+        scrollbar-width: thin;
+    }
 }
 
 @media screen and (width >= 1200px) {
-  :root {
-    scrollbar-width: auto;
-  }
+    :root {
+        scrollbar-width: auto;
+    }
 }

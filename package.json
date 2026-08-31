@@ -1,76 +1,76 @@
 {
-  "author": {
-    "email": "tomaschochola@tomaschochola.cz",
-    "name": "Tomáš Chochola",
-    "url": "https://github.com/tomaschochola"
-  },
-  "bugs": {
-    "email": "tomaschochola@tomaschochola.cz",
-    "url": "https://github.com/tomaschochola/template-web-components-spa/issues"
-  },
-  "contributors": [
-    {
-      "email": "tomaschochola@tomaschochola.cz",
-      "name": "Tomáš Chochola",
-      "url": "https://github.com/tomaschochola"
-    }
-  ],
-  "dependencies": {
-    "@fontsource-variable/atkinson-hyperlegible-next": "^5.3.0",
-    "@opentelemetry/api": "^1.9.1",
-    "@opentelemetry/api-logs": "^0.221.0",
-    "@opentelemetry/core": "^2.10.0",
-    "@opentelemetry/exporter-logs-otlp-http": "^0.221.0",
-    "@opentelemetry/exporter-metrics-otlp-http": "^0.221.0",
-    "@opentelemetry/exporter-trace-otlp-http": "^0.221.0",
-    "@opentelemetry/instrumentation": "^0.221.0",
-    "@opentelemetry/instrumentation-document-load": "^0.66.0",
-    "@opentelemetry/instrumentation-fetch": "^0.221.0",
-    "@opentelemetry/instrumentation-xml-http-request": "^0.221.0",
-    "@opentelemetry/opentelemetry-browser-detector": "^0.221.0",
-    "@opentelemetry/resources": "^2.10.0",
-    "@opentelemetry/sdk-logs": "^0.221.0",
-    "@opentelemetry/sdk-metrics": "^2.10.0",
-    "@opentelemetry/sdk-trace-base": "^2.10.0",
-    "@opentelemetry/sdk-trace-web": "^2.10.0",
-    "@opentelemetry/semantic-conventions": "^1.43.0",
-    "core-js": "^3.50.0",
-    "web-vitals": "^6.0.1"
-  },
-  "description": "Web Components single-page application template with TypeScript, Webpack, Playwright, and OpenTelemetry.",
-  "devDependencies": {
-    "@playwright/test": "1.62.1",
-    "@tomaschochola/tooling-babel": "github:tomaschochola/tooling-babel#main",
-    "@tomaschochola/tooling-browser-renderer": "github:tomaschochola/tooling-browser-renderer#main",
-    "@tomaschochola/tooling-eslint": "github:tomaschochola/tooling-eslint#main",
-    "@tomaschochola/tooling-favicons": "github:tomaschochola/tooling-favicons#main",
-    "@tomaschochola/tooling-playwright": "github:tomaschochola/tooling-playwright#main",
-    "@tomaschochola/tooling-postcss": "github:tomaschochola/tooling-postcss#main",
-    "@tomaschochola/tooling-prettier": "github:tomaschochola/tooling-prettier#main",
-    "@tomaschochola/tooling-stylelint": "github:tomaschochola/tooling-stylelint#main",
-    "@tomaschochola/tooling-trimmer": "github:tomaschochola/tooling-trimmer#main",
-    "@tomaschochola/tooling-typescript": "github:tomaschochola/tooling-typescript#main",
-    "@tomaschochola/tooling-webpack": "github:tomaschochola/tooling-webpack#main"
-  },
-  "funding": {
-    "type": "github",
-    "url": "https://github.com/sponsors/tomaschochola"
-  },
-  "homepage": "https://github.com/tomaschochola/template-web-components-spa",
-  "keywords": [
-    "tomaschochola",
-    "TomasChochola",
-    "Tomas Chochola",
-    "Tomáš Chochola",
-    "template-web-components-spa"
-  ],
-  "license": "CC-BY-ND-4.0",
-  "name": "@tomaschochola/template-web-components-spa",
-  "private": true,
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/tomaschochola/template-web-components-spa.git"
-  },
-  "type": "module",
-  "version": "0.0.0"
+    "author": {
+        "email": "tomaschochola@tomaschochola.cz",
+        "name": "Tomáš Chochola",
+        "url": "https://github.com/tomaschochola"
+    },
+    "bugs": {
+        "email": "tomaschochola@tomaschochola.cz",
+        "url": "https://github.com/tomaschochola/template-web-components-spa/issues"
+    },
+    "contributors": [
+        {
+            "email": "tomaschochola@tomaschochola.cz",
+            "name": "Tomáš Chochola",
+            "url": "https://github.com/tomaschochola"
+        }
+    ],
+    "dependencies": {
+        "@fontsource-variable/atkinson-hyperlegible-next": "^5.3.0",
+        "@opentelemetry/api": "^1.9.1",
+        "@opentelemetry/api-logs": "^0.221.0",
+        "@opentelemetry/core": "^2.10.0",
+        "@opentelemetry/exporter-logs-otlp-http": "^0.221.0",
+        "@opentelemetry/exporter-metrics-otlp-http": "^0.221.0",
+        "@opentelemetry/exporter-trace-otlp-http": "^0.221.0",
+        "@opentelemetry/instrumentation": "^0.221.0",
+        "@opentelemetry/instrumentation-document-load": "^0.66.0",
+        "@opentelemetry/instrumentation-fetch": "^0.221.0",
+        "@opentelemetry/instrumentation-xml-http-request": "^0.221.0",
+        "@opentelemetry/opentelemetry-browser-detector": "^0.221.0",
+        "@opentelemetry/resources": "^2.10.0",
+        "@opentelemetry/sdk-logs": "^0.221.0",
+        "@opentelemetry/sdk-metrics": "^2.10.0",
+        "@opentelemetry/sdk-trace-base": "^2.10.0",
+        "@opentelemetry/sdk-trace-web": "^2.10.0",
+        "@opentelemetry/semantic-conventions": "^1.43.0",
+        "core-js": "^3.50.0",
+        "web-vitals": "^6.0.1"
+    },
+    "description": "Web Components single-page application template with TypeScript, Webpack, Playwright, and OpenTelemetry.",
+    "devDependencies": {
+        "@playwright/test": "1.62.1",
+        "@tomaschochola/tooling-babel": "git+https://github.com/tomaschochola/tooling-babel.git#main",
+        "@tomaschochola/tooling-browser-renderer": "git+https://github.com/tomaschochola/tooling-browser-renderer.git#main",
+        "@tomaschochola/tooling-eslint": "git+https://github.com/tomaschochola/tooling-eslint.git#main",
+        "@tomaschochola/tooling-favicons": "git+https://github.com/tomaschochola/tooling-favicons.git#main",
+        "@tomaschochola/tooling-playwright": "git+https://github.com/tomaschochola/tooling-playwright.git#main",
+        "@tomaschochola/tooling-postcss": "git+https://github.com/tomaschochola/tooling-postcss.git#main",
+        "@tomaschochola/tooling-prettier": "git+https://github.com/tomaschochola/tooling-prettier.git#main",
+        "@tomaschochola/tooling-stylelint": "git+https://github.com/tomaschochola/tooling-stylelint.git#main",
+        "@tomaschochola/tooling-trimmer": "git+https://github.com/tomaschochola/tooling-trimmer.git#main",
+        "@tomaschochola/tooling-typescript": "git+https://github.com/tomaschochola/tooling-typescript.git#main",
+        "@tomaschochola/tooling-webpack": "git+https://github.com/tomaschochola/tooling-webpack.git#main"
+    },
+    "funding": {
+        "type": "github",
+        "url": "https://github.com/sponsors/tomaschochola"
+    },
+    "homepage": "https://github.com/tomaschochola/template-web-components-spa",
+    "keywords": [
+        "tomaschochola",
+        "TomasChochola",
+        "Tomas Chochola",
+        "Tomáš Chochola",
+        "template-web-components-spa"
+    ],
+    "license": "CC-BY-ND-4.0",
+    "name": "@tomaschochola/template-web-components-spa",
+    "private": true,
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/tomaschochola/template-web-components-spa.git"
+    },
+    "type": "module",
+    "version": "0.0.0"
 }

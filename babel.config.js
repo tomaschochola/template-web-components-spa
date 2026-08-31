@@ -13,9 +13,9 @@
 import { BabelConfigBuilder } from '@tomaschochola/tooling-babel';
 
 export default new BabelConfigBuilder({
-  mode: process.env.BABEL_ENV ?? process.env.NODE_ENV ?? 'production',
+    mode: process.env.BABEL_ENV ?? process.env.NODE_ENV ?? 'production',
 })
-  .addPresetEnv()
-  .addCoreJsEntryPolyfills()
-  .addPresetTypeScript()
-  .toConfig();
+    .addPresetEnv()
+    .addCoreJsEntryPolyfills()
+    .addPresetTypeScript()
+    .toConfig();

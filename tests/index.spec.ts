@@ -16,9 +16,9 @@ import { assertPage } from '@tomaschochola/tooling-playwright';
 // Sonar cannot follow assertion implementations across an external package declaration.
 // eslint-disable-next-line sonarjs/assertions-in-tests
 test('renders the home page', async ({ page }) => {
-  await assertPage(page, {
-    heading: 'Web Components SPA Template',
-    title: 'Web Components SPA Template',
-    url: '/',
-  });
+    await assertPage(page, {
+        heading: 'Web Components SPA Template',
+        title: 'Web Components SPA Template',
+        url: '/',
+    });
 });
