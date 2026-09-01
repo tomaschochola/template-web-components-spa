@@ -37,7 +37,7 @@ DEVCONTAINER_FILTER := label=devcontainer.local_folder=$(CURDIR)
 fix: eslint_fix stylelint_fix prettier_fix trimmer_fix
 
 .PHONY: check
-check: doctor lint analyze test build audit
+check: doctor lint analyze test dist audit
 
 .PHONY: doctor
 doctor: git_check npm_config_check npm_doctor
@@ -59,19 +59,17 @@ update: npm_config_check ./package.json ./package-lock.json npm_update
 
 .PHONY: clean
 clean:
-	rm -rf ./build
-	rm -rf ./dist
-	rm -rf ./test-results
+	rm --force --recursive --one-file-system -- ./build ./dist ./test-results
 
 .PHONY: distclean
 distclean: clean deps_clean
 
-.PHONY: build
-build: ./node_modules/.package-lock.json ./package.json ./package-lock.json assets_generate
+.PHONY: all
+all: ./node_modules/.package-lock.json ./package.json ./package-lock.json assets_generate
 	npm exec --no --ignore-scripts -- webpack-cli build --fail-on-warnings --mode=production --config-node-env=production --env APP_ENV="$(APP_ENV)" --env APP_INDEXABLE="$(APP_INDEXABLE)" --env APP_URL="$(APP_URL)"
 
-.PHONY: archive
-archive: build
+.PHONY: dist
+dist: all
 
 .PHONY: postcreate
 postcreate: deps_install assets_generate
@@ -113,22 +111,16 @@ assets_generate: favicons_generate open_graph_generate
 
 .PHONY: favicons_generate
 favicons_generate: ./node_modules/.package-lock.json ./package.json ./package-lock.json ./assets/icon.svg
-	rm -rf ./build/favicons
-	mkdir -p ./build/favicons
+	rm --force --recursive --one-file-system -- ./build/favicons
+	mkdir --parents -- ./build/favicons
 	npm exec --no --ignore-scripts -- tooling-favicons web ./assets/icon.svg ./build/favicons --apple-background '#141218'
 	npm exec --no --ignore-scripts -- tooling-favicons pwa ./assets/icon.svg ./build/favicons --maskable-background '#141218' --maskable-fit safe
 
 .PHONY: open_graph_generate
 open_graph_generate: ./node_modules/.package-lock.json ./package.json ./package-lock.json ./assets/icon.svg
-	rm -rf ./build/open-graph
-	mkdir -p ./build/open-graph
-	npm exec --no --ignore-scripts -- tooling-browser-renderer png \
-		./build/open-graph/open-graph.png \
-		--entry @tomaschochola/tooling-browser-renderer/products/open-graph \
-		--asset image=./assets/icon.svg \
-		--data open-graph-line-1=Template \
-		--width 1200 \
-		--height 630
+	rm --force --recursive --one-file-system -- ./build/open-graph
+	mkdir --parents -- ./build/open-graph
+	npm exec --no --ignore-scripts -- tooling-browser-renderer png ./build/open-graph/open-graph.png --entry @tomaschochola/tooling-browser-renderer/products/open-graph --asset image=./assets/icon.svg --data open-graph-line-1=Template --width 1200 --height 630
 
 .PHONY: trimmer_fix
 trimmer_fix: ./node_modules/.package-lock.json ./package.json ./package-lock.json
@@ -205,7 +197,7 @@ npm_check: npm_config_check ./node_modules/.package-lock.json
 
 .PHONY: npm_audit
 npm_audit: npm_config_check ./node_modules/.package-lock.json ./package.json ./package-lock.json
-	npm audit --ignore-scripts --audit-level=high --install-links --include=prod --include=dev --include=peer --include=optional
+	npm audit --ignore-scripts --audit-level=moderate --install-links --include=prod --include=dev --include=peer --include=optional
 
 .PHONY: npm_install
 npm_install: npm_config_check ./package.json ./package-lock.json
@@ -217,7 +209,7 @@ npm_update: npm_config_check ./package.json ./package-lock.json npm_clean
 
 .PHONY: npm_clean
 npm_clean:
-	rm -rf ./node_modules
+	rm --force --recursive --one-file-system -- ./node_modules
 
 .PHONY: git_check
 git_check:
