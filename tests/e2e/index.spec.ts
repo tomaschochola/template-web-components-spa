@@ -11,12 +11,10 @@
  */
 
 import { test } from '@playwright/test';
-import { assertPage } from '@tomaschochola/tooling-playwright';
+import { assertStandardPage } from '@tomaschochola/tooling-playwright';
 
-// Sonar cannot follow assertion implementations across an external package declaration.
-// eslint-disable-next-line sonarjs/assertions-in-tests
 test('renders the home page', async ({ page }) => {
-    await assertPage(page, {
+    await assertStandardPage(page, {
         heading: 'Web Components SPA Template',
         title: 'Web Components SPA Template',
         url: '/',
