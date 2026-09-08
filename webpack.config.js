@@ -67,9 +67,7 @@ export default function (env = {}, argv = {}) {
         tooling = tooling
             .precompressAssets()
             .addWorkboxServiceWorkerPlugin({
-                clientsClaim: true,
                 navigateFallback: 'index.html',
-                skipWaiting: true,
             })
             .addArchivePlugin();
     }
