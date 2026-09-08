@@ -111,8 +111,6 @@ assets_generate: favicons_generate open_graph_generate
 
 .PHONY: favicons_generate
 favicons_generate: ./node_modules/.package-lock.json ./package.json ./package-lock.json ./assets/icon.svg
-	rm --force --recursive --one-file-system -- ./build/favicons
-	mkdir --parents -- ./build/favicons
 	npm exec --no --ignore-scripts -- tooling-favicons web ./assets/icon.svg ./build/favicons --apple-background '#141218'
 	npm exec --no --ignore-scripts -- tooling-favicons pwa ./assets/icon.svg ./build/favicons --maskable-background '#141218' --maskable-fit safe
 
