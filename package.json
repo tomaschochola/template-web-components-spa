@@ -39,7 +39,7 @@
     },
     "description": "Web Components single-page application template with TypeScript, Webpack, Playwright, and OpenTelemetry.",
     "devDependencies": {
-        "@playwright/test": "1.62.1",
+        "@playwright/test": "1.63.0",
         "@tomaschochola/tooling-babel": "git+https://github.com/tomaschochola/tooling-babel.git#main",
         "@tomaschochola/tooling-browser-renderer": "git+https://github.com/tomaschochola/tooling-browser-renderer.git#main",
         "@tomaschochola/tooling-eslint": "git+https://github.com/tomaschochola/tooling-eslint.git#main",
