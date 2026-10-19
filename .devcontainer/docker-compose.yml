@@ -1,5 +1,3 @@
-name: 'template-web-components-spa-devcontainer'
-
 networks:
     devcontainer:
         internal: false
@@ -11,7 +9,9 @@ services:
         build:
             context: './'
             dockerfile: 'Dockerfile'
-        command: ['sleep', 'infinity']
+        command:
+            - 'sleep'
+            - 'infinity'
         depends_on:
             wiremock:
                 condition: 'service_healthy'
@@ -25,7 +25,9 @@ services:
             options:
                 max-file: '3'
                 max-size: '10m'
-        networks: ['devcontainer', 'wiremock']
+        networks:
+            - 'devcontainer'
+            - 'wiremock'
         ports:
             - '61100:61100'
             - '127.0.0.1:61101-61102:61101-61102'
