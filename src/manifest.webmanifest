@@ -38,9 +38,9 @@
     ],
     "id": "./",
     "lang": "en",
-    "name": "Web Components SPA Template",
+    "name": "tomaschochola/template-web-components-spa",
     "scope": "./",
-    "short_name": "WC SPA",
+    "short_name": "tomaschochola/template-web-components-spa",
     "start_url": "./",
     "theme_color": "#fdf7ff"
 }
