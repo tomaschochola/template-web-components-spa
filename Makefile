@@ -202,7 +202,7 @@ playwright_test_headed: ./node_modules/.package-lock.json ./package.json ./packa
 
 .PHONY: playwright_test_ui
 playwright_test_ui: ./node_modules/.package-lock.json ./package.json ./package-lock.json ./tests/e2e/playwright.config.ts assets_generate
-	npm exec --no --ignore-scripts -- playwright test --config ./tests/e2e/playwright.config.ts --ui --ui-host=0.0.0.0 --ui-port=61102
+	npm exec --no --ignore-scripts -- playwright test --config ./tests/e2e/playwright.config.ts --ui --ui-host=0.0.0.0 --ui-port=61132
 
 .PHONY: npm_config_check
 npm_config_check: ./.npmrc

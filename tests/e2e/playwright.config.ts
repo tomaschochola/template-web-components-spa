@@ -17,7 +17,7 @@ import {
     // createPlaywrightTabletProjects,
 } from '@tomaschochola/tooling-playwright';
 
-const baseURL = 'http://127.0.0.1:61100';
+const baseURL = 'http://127.0.0.1:61130';
 
 export default createPlaywrightConfig({
     projects: [
