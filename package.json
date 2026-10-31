@@ -64,7 +64,7 @@
         "Tomáš Chochola",
         "template-web-components-spa"
     ],
-    "license": "CC-BY-ND-4.0",
+    "license": "BSD-3-Clause",
     "name": "@tomaschochola/template-web-components-spa",
     "private": true,
     "repository": {
