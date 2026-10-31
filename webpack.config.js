@@ -31,7 +31,7 @@ export default function (env = {}, argv = {}) {
                 './src/index.ts',
             ],
         })
-        .setDevServerPort(61130)
+        .setDevServerPort(8080)
         .addBrowserLoaders({
             html: {
                 variables: {
