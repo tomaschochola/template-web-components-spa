@@ -1,6 +1,6 @@
 {
     "background_color": "#fdf7ff",
-    "description": "Web Components single-page application template with TypeScript, Webpack, Playwright, and OpenTelemetry.",
+    "description": "github.com/tomaschochola/template-web-components-spa",
     "display": "standalone",
     "icons": [
         {
@@ -38,9 +38,9 @@
     ],
     "id": "./",
     "lang": "en",
-    "name": "tomaschochola/template-web-components-spa",
+    "name": "github.com/tomaschochola/template-web-components-spa",
     "scope": "./",
-    "short_name": "tomaschochola/template-web-components-spa",
+    "short_name": "github.com/tomaschochola/template-web-components-spa",
     "start_url": "./",
     "theme_color": "#fdf7ff"
 }
