@@ -14,19 +14,7 @@ import { BatchLogRecordProcessor, LoggerProvider } from '@opentelemetry/sdk-logs
 import { MeterProvider, PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
 import { BatchSpanProcessor } from '@opentelemetry/sdk-trace-base';
 import { WebTracerProvider } from '@opentelemetry/sdk-trace-web';
-import {
-    ATTR_ERROR_TYPE,
-    ATTR_EXCEPTION_MESSAGE,
-    ATTR_EXCEPTION_STACKTRACE,
-    ATTR_EXCEPTION_TYPE,
-    ATTR_SERVICE_NAME,
-    ATTR_SERVICE_VERSION,
-    ATTR_URL_FRAGMENT,
-    ATTR_URL_FULL,
-    ATTR_URL_PATH,
-    ATTR_URL_QUERY,
-    ERROR_TYPE_VALUE_OTHER,
-} from '@opentelemetry/semantic-conventions';
+import { ATTR_ERROR_TYPE, ATTR_EXCEPTION_MESSAGE, ATTR_EXCEPTION_STACKTRACE, ATTR_EXCEPTION_TYPE, ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION, ATTR_URL_FRAGMENT, ATTR_URL_FULL, ATTR_URL_PATH, ATTR_URL_QUERY, ERROR_TYPE_VALUE_OTHER } from '@opentelemetry/semantic-conventions';
 import { ATTR_DEPLOYMENT_ENVIRONMENT_NAME } from '@opentelemetry/semantic-conventions/incubating';
 import { onCLS, onFCP, onINP, onLCP, onTTFB, type Metric } from 'web-vitals';
 
